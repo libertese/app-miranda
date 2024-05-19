@@ -16,6 +16,14 @@ export const enum VectorFieldOptions {
     Both = "both"
 }
 
+export type AskResponse = {
+    answer: string;
+    thoughts: string;
+    questionid: string;
+    data_points: string[];
+    error?: string;
+};
+
 export type ChatAppRequestOverrides = {
     retrieval_mode?: RetrievalMode;
     semantic_ranker?: boolean;
