@@ -508,12 +508,9 @@
 }
 
 .VideoAvatarWelcome {
-    margin: -1px;
-    clip-path: inset(0px);
     position: relative;
-    top: 10px;
-    width: 100vw;
-    height: 90vh;
+    width: 100%;
+    height: 95%;
 }
 
 @media only screen and (max-width: 800px) {
