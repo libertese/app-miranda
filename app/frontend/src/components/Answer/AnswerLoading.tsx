@@ -3,6 +3,7 @@ import { animated, useSpring } from "@react-spring/web";
 
 import styles from "./Answer.module.css";
 import { AnswerIcon } from "./AnswerIcon";
+import mirandaLogo from "../../assets/miranda.png";
 
 export const AnswerLoading = () => {
     const animatedStyles = useSpring({
@@ -13,10 +14,10 @@ export const AnswerLoading = () => {
     return (
         <animated.div style={{ ...animatedStyles }}>
             <Stack className={styles.answerContainer} verticalAlign="space-between">
-                <AnswerIcon />
+                <img src={mirandaLogo} alt="Miranda do Douro Logo" aria-label="Miranda do Douro Logo" width="28" height="28"></img>
                 <Stack.Item grow>
                     <p className={styles.answerText}>
-                        Generating answer
+                        ...
                         <span className={styles.loadingdots} />
                     </p>
                 </Stack.Item>
