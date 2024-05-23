@@ -198,21 +198,6 @@ export function Component(): JSX.Element {
 
     return (
         <div className={styles.askContainer}>
-            <div className={styles.askTopSection}>
-                <div className={styles.commandsContainer}>
-                    {showUserUpload && <UploadFile className={styles.commandButton} disabled={!isLoggedIn(client)} />}
-                    <SettingsButton className={styles.commandButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
-                </div>
-                <h1 className={styles.askTitle}>Ask your data</h1>
-                <div className={styles.askQuestionInput}>
-                    <QuestionInput
-                        placeholder="Example: Does my plan cover annual eye exams?"
-                        disabled={isLoading}
-                        initQuestion={question}
-                        onSend={question => makeApiRequest(question)}
-                    />
-                </div>
-            </div>
             <div className={styles.askBottomSection}>
                 {isLoading && <Spinner label="Generating answer" />}
                 {!lastQuestionRef.current && <ExampleList language2="" onExampleClicked={onExampleClicked} useGPT4V={useGPT4V} />}
