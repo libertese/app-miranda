@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { Stack, IconButton } from "@fluentui/react";
 import DOMPurify from "dompurify";
 
@@ -26,6 +26,8 @@ interface Props {
     playsound: boolean;
     language?: string;
 }
+const [positiveFeedback, setPositiveFeedback] = useState<boolean>(false);
+const [negativeFeedback, setNegativeFeedback] = useState<boolean>(false);
 
 export const Answer = ({
     key,
@@ -183,6 +185,20 @@ export const Answer = ({
                         <div></div>
                     </Stack>
                 </Stack.Item>
+                <div className={styles.buttonsAnswerFeedback}>
+                    <div className={styles.buttonLike}>
+                        <ThumbLike24Regular
+                            primaryFill="rgb(50, 205, 50)"
+                            className={`${positiveFeedback ? styles.likeCliked : ""} ${styles.like}`}
+                        ></ThumbLike24Regular>
+                    </div>
+                    <div className={styles.buttonDislike}>
+                        <ThumbDislike24Regular
+                            primaryFill="rgb(255, 0, 0)"
+                            className={`${negativeFeedback ? styles.dislikeCliked : ""} ${styles.dislike}`}
+                        ></ThumbDislike24Regular>
+                    </div>
+                </div>
                 {/* <div className={styles.buttonsAnswerFeedback}>
                     <div className={styles.buttonLike} onClick={event => sendPositiveFeedback(event, answer.questionid)}>
                         <ThumbLike24Regular
