@@ -1,28 +1,20 @@
 import { useEffect, useState } from "react";
-import { useMsal } from "@azure/msal-react";
 import { Stack, TextField } from "@fluentui/react";
-import { Button, Tooltip, Field, Textarea } from "@fluentui/react-components";
-import { Send28Filled, Mic32Regular, MicOff32Regular } from "@fluentui/react-icons"; // Importe os ícones do FluentUI
-import { isLoggedIn, requireLogin } from "../../authConfig";
-
+import { Send28Filled, Mic28Filled, Record24Regular } from "@fluentui/react-icons";
+import { PiMicrophoneFill } from "react-icons/pi";
 import styles from "./QuestionInput.module.css";
 
 interface Props {
     onSend: (question: string) => void;
     disabled: boolean;
-    initQuestion?: string;
     placeholder?: string;
     clearOnSend?: boolean;
+    onListen: () => void;
+    isActive?: boolean;
 }
 
-export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, initQuestion }: Props) => {
+export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, onListen, isActive }: Props) => {
     const [question, setQuestion] = useState<string>("");
-    const [speechRecognitionActive, setSpeechRecognitionActive] = useState<boolean>(false); // Novo estado para controlar a ativação do reconhecimento de voz
-    const [speechRecognitionText, setSpeechRecognitionText] = useState<string>(""); // Novo estado para armazenar o texto reconhecido pelo microfone
-
-    useEffect(() => {
-        initQuestion && setQuestion(initQuestion);
-    }, [initQuestion]);
 
     const sendQuestion = () => {
         if (disabled || !question.trim()) {
@@ -51,45 +43,12 @@ export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, init
         }
     };
 
-    const { instance } = useMsal();
-    const disableRequiredAccessControl = requireLogin && !isLoggedIn(instance);
-    const sendQuestionDisabled = disabled || !question.trim() || requireLogin;
-
-    if (disableRequiredAccessControl) {
-        placeholder = "Please login to continue...";
-    }
-
-    // Função para iniciar o reconhecimento de voz
-    // const startSpeechRecognition = () => {
-    //     // const recognition = new window.webkitSpeechRecognition(); // Crie uma nova instância de reconhecimento de fala
-    //     recognition.lang = "en-US"; // Defina o idioma para inglês americano, ajuste conforme necessário
-
-    //     recognition.onstart = () => {
-    //         setSpeechRecognitionActive(true); // Atualize o estado para indicar que o reconhecimento de voz está ativo
-    //     };
-
-    //     // recognition.onresult = (event: SpeechRecognitionEvent) => {
-    //     //     const transcript = event.results[0][0].transcript;
-    //     //     setSpeechRecognitionText(transcript); // Atualize o estado com o texto reconhecido pelo microfone
-    //     // };
-
-    //     recognition.onend = () => {
-    //         setSpeechRecognitionActive(false); // Atualize o estado para indicar que o reconhecimento de voz foi encerrado
-    //     };
-
-    //     recognition.start(); // Inicie o reconhecimento de voz
-    // };
-
-    // Função para parar o reconhecimento de voz
-    // const stopSpeechRecognition = () => {
-    //     window.webkitSpeechRecognition.stop(); // Pare o reconhecimento de voz
-    // };
+    const sendQuestionDisabled = disabled || !question.trim();
 
     return (
         <Stack horizontal className={styles.questionInputContainer}>
             <TextField
                 className={styles.questionInputTextArea}
-                disabled={disableRequiredAccessControl}
                 placeholder={placeholder}
                 multiline
                 resizable={false}
@@ -99,7 +58,22 @@ export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, init
                 onKeyDown={onEnterPress}
             />
             <div className={styles.questionInputButtonsContainer}>
-                <Button size="large" icon={<Send28Filled primaryFill="rgba(115, 118, 225, 1)" />} disabled={sendQuestionDisabled} onClick={sendQuestion} />
+                <div
+                    className={`${styles.questionInputSendButton} ${sendQuestionDisabled ? styles.questionInputSendButtonDisabled : ""} ${styles.microphone}}`}
+                    aria-label="Diga algo para mim"
+                    onClick={() => {
+                        onListen();
+                    }}
+                >
+                    <PiMicrophoneFill size={24} style={{ color: isActive ? "#1d9dff" : "rgba(29,157,255, 1)" }} />
+                </div>
+                <div
+                    className={`${styles.questionInputSendButton} ${sendQuestionDisabled ? styles.questionInputSendButtonDisabled : ""}`}
+                    aria-label="Me pergunte algo"
+                    onClick={sendQuestion}
+                >
+                    <Send28Filled primaryFill="rgb(29,157,255)" color="#1d9dff" style={{ color: "#1d9dff" }} />
+                </div>
             </div>
         </Stack>
     );

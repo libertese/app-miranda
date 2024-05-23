@@ -33,10 +33,11 @@ import { GPT4VSettings } from "../../components/GPT4VSettings";
 import { Mic28Filled, Record24Regular } from "@fluentui/react-icons";
 import newPauliteiro from "../../assets/new-pauliteiro.mp4";
 import { BsVolumeUpFill, BsVolumeMuteFill } from "react-icons/bs";
+import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 
 const Chat = () => {
     const { t } = useTranslation();
-    const [language, setLanguage] = useState<string>("en");
+    const [language, setLanguage] = useState<string>("pt");
     const [color, setColor] = useState("#B9A149");
     const [colorHeader, setColorHeader] = useState("#E1D4A7");
     const [menuOpen, setMenuOpen] = useState(false);
@@ -113,36 +114,35 @@ const Chat = () => {
     const [showPopupDisclaimer, setShowPopupDisclaimer] = useState(true);
     const [isActive, setIsActive] = useState(false);
 
-    // const handleVoiceInput = () => {
-    //     const speechConfig = sdk.SpeechConfig.fromSubscription("54f08182a9654cca8e01cf697e38b004", "westeurope");
-    //     speechConfig.speechRecognitionLanguage = "pt-PT";
-    //     setIsActive(true);
-    //     const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
-    //     let recognizer: sdk.SpeechRecognizer | undefined;
+    const handleVoiceInput = () => {
+        const speechConfig = sdk.SpeechConfig.fromSubscription("54f08182a9654cca8e01cf697e38b004", "westeurope");
+        speechConfig.speechRecognitionLanguage = "pt-PT";
+        setIsActive(true);
+        const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
+        let recognizer: sdk.SpeechRecognizer | undefined;
 
-    //     recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
+        recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
 
-    //     recognizer.recognizeOnceAsync(
-    //         (result: { text: any }) => {
-    //             const recognizedText = result.text;
-    //             console.log("recognized", recognizedText);
-    //             makeApiRequest(recognizedText);
+        recognizer.recognizeOnceAsync(
+            (result: { text: any }) => {
+                const recognizedText = result.text;
+                console.log("recognized", recognizedText);
+                makeApiRequest(recognizedText);
 
-    //             recognizer?.close();
-    //             setIsActive(false);
-    //             recognizer = undefined;
-    //         },
-    //         (err: string) => {
-    //             console.trace("err - " + err);
+                recognizer?.close();
+                setIsActive(false);
+                recognizer = undefined;
+            },
+            (err: string) => {
+                console.trace("err - " + err);
 
-    //             recognizer?.close();
-    //             recognizer = undefined;
-    //         }
-    //     );
+                recognizer?.close();
+                recognizer = undefined;
+            }
+        );
 
-    //     const player = new sdk.SpeakerAudioDestination();
-    // };
-
+        // const player = new sdk.SpeakerAudioDestination();
+    };
     const closePopup = () => {
         setShowPopup(false);
     };
@@ -366,6 +366,23 @@ const Chat = () => {
         setSelectedAnswer(index);
     };
 
+    const getPlaceholderText = (language?: string): string => {
+        switch (language) {
+            case "es":
+                return "Ingrese su pregunta";
+            case "fr":
+                return "Tapez votre question";
+            case "de":
+                return "Geben Sie Ihre Frage ein";
+            case "pt":
+                return "Digite a sua Pergunta";
+            case "en":
+                return "Enter your Question";
+            default:
+                return "Enter your Question";
+        }
+    };
+
     return (
         <div className={styles.container}>
             <Modal
@@ -551,13 +568,18 @@ const Chat = () => {
                             </div>
 
                             <div>
-                                <ClearChatButton className={styles.commandButtonDelete} onClick={clearChat} disabled={!lastQuestionRef.current || isLoading} />
+                                <ClearChatButton
+                                    language={language}
+                                    className={styles.commandButtonDelete}
+                                    onClick={clearChat}
+                                    disabled={!lastQuestionRef.current || isLoading}
+                                />
                                 <QuestionInput
                                     clearOnSend
-                                    placeholder="Digite a sua Pergunta"
+                                    placeholder={getPlaceholderText(language)}
                                     disabled={isLoading}
                                     onSend={question => makeApiRequest(question)}
-                                    // onListen={handleVoiceInput}
+                                    onListen={handleVoiceInput}
                                     // isActive={isActive}
                                 />
                             </div>
@@ -705,7 +727,7 @@ const Chat = () => {
                                         placeholder="Digite a sua Pergunta"
                                         disabled={isLoading}
                                         onSend={question => makeApiRequest(question)}
-                                        // onListen={handleVoiceInput}
+                                        onListen={handleVoiceInput}
                                         // isActive={isActive}
                                     />
 
