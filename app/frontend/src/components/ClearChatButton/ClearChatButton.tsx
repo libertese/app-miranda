@@ -7,13 +7,30 @@ interface Props {
     className?: string;
     onClick: () => void;
     disabled?: boolean;
+    language?: string;
 }
 
-export const ClearChatButton = ({ className, disabled, onClick }: Props) => {
+const getButtonText = (language?: string): string => {
+    console.log("..." + language);
+    switch (language) {
+        case "es":
+            return "Limpiar chat";
+        case "fr":
+            return "Effacer la discussion";
+        case "de":
+            return "Chat löschen";
+        case "pt":
+            return "Limpar chat";
+        default:
+            return "Clear chat";
+    }
+};
+
+export const ClearChatButton = ({ className, disabled, onClick, language }: Props) => {
     return (
         <div className={`${styles.container} ${className ?? ""}`}>
             <Button icon={<Delete24Regular />} disabled={disabled} onClick={onClick}>
-                {"Clear chat"}
+                {getButtonText(language)}
             </Button>
         </div>
     );
