@@ -48,7 +48,7 @@
       "value": "${AZURE_DOCUMENTINTELLIGENCE_LOCATION}"
     },
     "searchIndexName": {
-      "value": "${AZURE_SEARCH_INDEX=gptkbindex}"
+      "value": "${AZURE_SEARCH_INDEX=azureblob-index}"
     },
     "searchServiceName": {
       "value": "${AZURE_SEARCH_SERVICE}"

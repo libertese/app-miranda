@@ -1,8 +1,8 @@
 import { useRef, useState, useEffect } from "react";
 import { Checkbox, Panel, DefaultButton, TextField, SpinButton, Slider } from "@fluentui/react";
 import { SparkleFilled } from "@fluentui/react-icons";
+import { useTranslation } from "react-i18next";
 import readNDJSONStream from "ndjson-readablestream";
-
 import styles from "./Chat.module.css";
 
 import {
@@ -16,6 +16,7 @@ import {
     VectorFieldOptions,
     GPT4VInput
 } from "../../api";
+import Modal from "react-modal";
 import { Answer, AnswerError, AnswerLoading } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
 import { ExampleList } from "../../components/Example";
@@ -29,8 +30,49 @@ import { VectorSettings } from "../../components/VectorSettings";
 import { useMsal } from "@azure/msal-react";
 import { TokenClaimsDisplay } from "../../components/TokenClaimsDisplay";
 import { GPT4VSettings } from "../../components/GPT4VSettings";
+import { Mic28Filled, Record24Regular } from "@fluentui/react-icons";
+import newPauliteiro from "../../assets/new-pauliteiro.mp4";
+import { BsVolumeUpFill, BsVolumeMuteFill } from "react-icons/bs";
 
 const Chat = () => {
+    const { t } = useTranslation();
+    const [language, setLanguage] = useState<string>("en");
+    const [color, setColor] = useState("#B9A149");
+    const [colorHeader, setColorHeader] = useState("#E1D4A7");
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+    };
+    const [selectedMenuItem, setSelectedMenuItem] = useState("");
+
+    const handleMenuItemClick = (item: string) => {
+        setSelectedMenuItem(item);
+        console.log(item);
+        switch (item) {
+            case "restaurante":
+                setColor("#B9A149");
+                setColorHeader("#E1D4A7");
+                break;
+            case "turismo":
+                setColor("#1C5D89");
+                setColorHeader("#C5DFEE");
+                break;
+            case "prefeitura":
+                setColor("#A14637");
+                setColorHeader("#F8D8CF");
+                break;
+            default:
+                setColor("#B9A149");
+                setColorHeader("#E1D4A7");
+        }
+        setMenuOpen(false);
+    };
+
+    const handleLanguageChange = (lang: string) => {
+        setLanguage(lang);
+    };
+
     const [isConfigPanelOpen, setIsConfigPanelOpen] = useState(false);
     const [promptTemplate, setPromptTemplate] = useState<string>("");
     const [temperature, setTemperature] = useState<number>(0.3);
@@ -48,6 +90,7 @@ const Chat = () => {
     const [useGroupsSecurityFilter, setUseGroupsSecurityFilter] = useState<boolean>(false);
     const [gpt4vInput, setGPT4VInput] = useState<GPT4VInput>(GPT4VInput.TextAndImages);
     const [useGPT4V, setUseGPT4V] = useState<boolean>(false);
+    const [isSoundOn, setIsSoundOn] = useState(true);
 
     const lastQuestionRef = useRef<string>("");
     const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
@@ -55,6 +98,7 @@ const Chat = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isStreaming, setIsStreaming] = useState<boolean>(false);
     const [error, setError] = useState<unknown>();
+    const [showPopup, setShowPopup] = useState(false);
 
     const [activeCitation, setActiveCitation] = useState<string>();
     const [activeAnalysisPanelTab, setActiveAnalysisPanelTab] = useState<AnalysisPanelTabs | undefined>(undefined);
@@ -66,6 +110,46 @@ const Chat = () => {
     const [showSemanticRankerOption, setShowSemanticRankerOption] = useState<boolean>(false);
     const [showVectorOption, setShowVectorOption] = useState<boolean>(false);
     const [showUserUpload, setShowUserUpload] = useState<boolean>(false);
+    const [showPopupDisclaimer, setShowPopupDisclaimer] = useState(true);
+    const [isActive, setIsActive] = useState(false);
+
+    // const handleVoiceInput = () => {
+    //     const speechConfig = sdk.SpeechConfig.fromSubscription("54f08182a9654cca8e01cf697e38b004", "westeurope");
+    //     speechConfig.speechRecognitionLanguage = "pt-PT";
+    //     setIsActive(true);
+    //     const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
+    //     let recognizer: sdk.SpeechRecognizer | undefined;
+
+    //     recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
+
+    //     recognizer.recognizeOnceAsync(
+    //         (result: { text: any }) => {
+    //             const recognizedText = result.text;
+    //             console.log("recognized", recognizedText);
+    //             makeApiRequest(recognizedText);
+
+    //             recognizer?.close();
+    //             setIsActive(false);
+    //             recognizer = undefined;
+    //         },
+    //         (err: string) => {
+    //             console.trace("err - " + err);
+
+    //             recognizer?.close();
+    //             recognizer = undefined;
+    //         }
+    //     );
+
+    //     const player = new sdk.SpeakerAudioDestination();
+    // };
+
+    const closePopup = () => {
+        setShowPopup(false);
+    };
+
+    const closePopupDisclaimer = () => {
+        setShowPopupDisclaimer(false);
+    };
 
     const getConfig = async () => {
         configApi().then(config => {
@@ -284,91 +368,372 @@ const Chat = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.commandsContainer}>
-                <ClearChatButton className={styles.commandButton} onClick={clearChat} disabled={!lastQuestionRef.current || isLoading} />
-                {showUserUpload && <UploadFile className={styles.commandButton} disabled={!isLoggedIn(client)} />}
-                <SettingsButton className={styles.commandButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
-            </div>
-            <div className={styles.chatRoot}>
-                <div className={styles.chatContainer}>
-                    {!lastQuestionRef.current ? (
-                        <div className={styles.chatEmptyState}>
-                            <SparkleFilled fontSize={"120px"} primaryFill={"rgba(115, 118, 225, 1)"} aria-hidden="true" aria-label="Chat logo" />
-                            <h1 className={styles.chatEmptyStateTitle}>Chat with your data</h1>
-                            <h2 className={styles.chatEmptyStateSubtitle}>Ask anything or try an example</h2>
-                            <ExampleList onExampleClicked={onExampleClicked} useGPT4V={useGPT4V} />
-                        </div>
-                    ) : (
-                        <div className={styles.chatMessageStream}>
-                            {isStreaming &&
-                                streamedAnswers.map((streamedAnswer, index) => (
-                                    <div key={index}>
-                                        <UserChatMessage message={streamedAnswer[0]} />
-                                        <div className={styles.chatMessageGpt}>
-                                            <Answer
-                                                isStreaming={true}
-                                                key={index}
-                                                answer={streamedAnswer[1]}
-                                                isSelected={false}
-                                                onCitationClicked={c => onShowCitation(c, index)}
-                                                onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab, index)}
-                                                onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab, index)}
-                                                onFollowupQuestionClicked={q => makeApiRequest(q)}
-                                                showFollowupQuestions={useSuggestFollowupQuestions && answers.length - 1 === index}
-                                            />
-                                        </div>
-                                    </div>
-                                ))}
-                            {!isStreaming &&
-                                answers.map((answer, index) => (
-                                    <div key={index}>
-                                        <UserChatMessage message={answer[0]} />
-                                        <div className={styles.chatMessageGpt}>
-                                            <Answer
-                                                isStreaming={false}
-                                                key={index}
-                                                answer={answer[1]}
-                                                isSelected={selectedAnswer === index && activeAnalysisPanelTab !== undefined}
-                                                onCitationClicked={c => onShowCitation(c, index)}
-                                                onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab, index)}
-                                                onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab, index)}
-                                                onFollowupQuestionClicked={q => makeApiRequest(q)}
-                                                showFollowupQuestions={useSuggestFollowupQuestions && answers.length - 1 === index}
-                                            />
-                                        </div>
-                                    </div>
-                                ))}
-                            {isLoading && (
-                                <>
-                                    <UserChatMessage message={lastQuestionRef.current} />
-                                    <div className={styles.chatMessageGptMinWidth}>
-                                        <AnswerLoading />
-                                    </div>
-                                </>
-                            )}
-                            {error ? (
-                                <>
-                                    <UserChatMessage message={lastQuestionRef.current} />
-                                    <div className={styles.chatMessageGptMinWidth}>
-                                        <AnswerError error={error.toString()} onRetry={() => makeApiRequest(lastQuestionRef.current)} />
-                                    </div>
-                                </>
-                            ) : null}
-                            <div ref={chatMessageStreamEnd} />
+            <Modal
+                isOpen={showPopup}
+                onRequestClose={closePopup}
+                contentLabel="Custom Pop-up"
+                className={styles.popupContainer}
+                overlayClassName={styles.overlay}
+            >
+                <div>
+                    <button className={styles.closeButton} onClick={closePopup}>
+                        x Fechar
+                    </button>
+                    <h2>Sobre o GPM</h2>
+                    <p>O Guia Prático do Município é uma ferramenta ao dispor de todos os cidadãos, que pretende preservar e propagar a Cultura Regional.</p>
+                    <p>
+                        O GPM é baseado no modelo de linguagem GPT, criado pela OpenAI e pela Microsoft e disponibilizado na plataforma Microsoft Azure OpenAI.
+                    </p>
+                    <p>
+                        O GPM foi desenvolvido pela parceria CIT-TTM (Centro de Inovação e Tecnologia Terras de Trás-os-Montes) e a TAC Services Portugal, com o
+                        apoio da Microsoft, tendo como objetivo a interação com o cidadão através de linguagem natural
+                    </p>
+                </div>
+            </Modal>
+            <Modal
+                isOpen={showPopupDisclaimer}
+                onRequestClose={closePopupDisclaimer}
+                contentLabel="Custom Pop-up"
+                className={styles.popupContainer}
+                overlayClassName={styles.overlay}
+            >
+                <div>
+                    <button className={styles.closeButton} onClick={closePopupDisclaimer}>
+                        x
+                    </button>
+                    <br></br>
+                    <h2> Bem-vindo à versão Beta do GPM!</h2>
+                    <p>Para melhorar o assistente virtual, as perguntas e as respostas geradas serão armazenadas por um período de 7 dias.</p>
+                    <p>
+                        Pedimos que não insira dados pessoais quando colocar as suas questões. Caso o faça, os mesmos serão guardados, à semelhança de todas as
+                        perguntas e respostas, durante 7 dias, para efeitos de melhoria do serviço. Após esse prazo, serão eliminados.
+                    </p>
+                    <p>Use as sugestões de perguntas, ou coloque sua própria questão na área indicada:</p>
+                </div>
+            </Modal>
+            <div className={styles.header} style={{ backgroundColor: colorHeader }}>
+                <div className={styles.menuIcon} onClick={toggleMenu}>
+                    ☰
+                    {menuOpen && (
+                        <div className={styles.dropdownMenu}>
+                            <ul>
+                                <li>
+                                    <a onClick={() => handleMenuItemClick("restaurante")}>Restaurantes</a>
+                                </li>
+                                <li>
+                                    <a onClick={() => handleMenuItemClick("turismo")}>Turismo</a>
+                                </li>
+                                <li>
+                                    <a onClick={() => handleMenuItemClick("prefeitura")}>Prefeitura</a>
+                                </li>
+                            </ul>
                         </div>
                     )}
-
-                    <div className={styles.chatInput}>
-                        <QuestionInput
-                            clearOnSend
-                            placeholder="Type a new question (e.g. does my plan cover annual eye exams?)"
-                            disabled={isLoading}
-                            onSend={question => makeApiRequest(question)}
-                        />
-                    </div>
                 </div>
+                <h1 className={styles.title} style={{ color: color }}>
+                    Guia Prático do Município
+                </h1>
+                <div className={styles.languageButtons}>
+                    <button onClick={() => handleLanguageChange("en")}>
+                        <img
+                            src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+                            alt="English Flag"
+                            className={styles.flagIcon}
+                        />
+                    </button>
+                    <button onClick={() => handleLanguageChange("pt")}>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" alt="Brazilian Flag" className={styles.flagIcon} />
+                    </button>
+                    <button onClick={() => handleLanguageChange("es")}>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg" alt="Spanish Flag" className={styles.flagIcon} />
+                    </button>
+                </div>
+            </div>
+            <div
+                //className={styles.chatRoot}
+                style={{
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "column",
+                    backgroundColor: "#fff",
+                    width: "100%",
+                    height: "100%",
+                    margin: "auto"
+                }}
+            >
+                {/* <div className={styles.chatContainer}> */}
+                {!lastQuestionRef.current ? (
+                    // <div
+                    //   className={styles.chatEmptyState}
+                    //   style={{ maxHeight: "100vh", height: "100vh" }}
+                    // >
 
-                {answers.length > 0 && activeAnalysisPanelTab && (
+                    <div className={styles.chatWrapper}>
+                        <div>
+                            <div
+                                style={{
+                                    // display: "flex",
+                                    // flexDirection: "column",
+                                    // gap: "10px",
+                                    justifyContent: "end",
+                                    paddingLeft: "10px",
+                                    position: "relative",
+                                    width: "100%"
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        marginBottom: "0",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "end",
+                                        alignItems: "center",
+                                        overflow: "hidden"
+                                    }}
+                                    className={styles.avatarWelcome}
+                                >
+                                    <video
+                                        id="Welcomeavatar"
+                                        src={newPauliteiro}
+                                        controls={false}
+                                        autoPlay={true}
+                                        loop
+                                        muted
+                                        disablePictureInPicture
+                                        controlsList="nodownload"
+                                        className={styles.VideoAvatarWelcome}
+                                    />
+                                </div>
+                                {/* {isActive ? (
+                                    <button className={styles.btnVoiceRedondo} style={{ position: "absolute" }} onClick={handleVoiceInput}>
+                                        <Record24Regular color="#1d9dff" primaryFill="rgb(29,157,255)" />
+                                    </button>
+                                ) : (
+                                    <button className={styles.btnVoiceRedondo} style={{ position: "absolute" }} onClick={handleVoiceInput}>
+                                        <Mic28Filled /> 
+                                    </button>
+                                )} */}
+                                {/* <div> */}
+                                <div
+                                    id="linha 365"
+                                    className={styles.volumeIconWrapper}
+                                    onClick={() => {
+                                        setIsSoundOn(!isSoundOn);
+                                        // isSoundOn ? setaudiostatus("pause") : setaudiostatus("resume");
+                                    }}
+                                >
+                                    {isSoundOn ? (
+                                        <BsVolumeUpFill style={{ color: "white" }} size={32} />
+                                    ) : (
+                                        <BsVolumeMuteFill style={{ color: "white" }} size={32} />
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            //className={styles.formContent}
+                            style={{
+                                paddingTop: "50px",
+                                paddingRight: "10px",
+                                display: "flex", // {/*justifyContent: "space-between",
+                                justifyContent: "space-between",
+                                flexDirection: "column"
+                            }}
+                        >
+                            <div className={styles.boxSugestoes}>
+                                <ExampleList
+                                    language2={language}
+                                    selectedMenuItem={selectedMenuItem}
+                                    onExampleClicked={onExampleClicked}
+                                    colorHeader={colorHeader}
+                                    colorText={color}
+                                />
+                            </div>
+
+                            <div>
+                                <ClearChatButton className={styles.commandButtonDelete} onClick={clearChat} disabled={!lastQuestionRef.current || isLoading} />
+                                <QuestionInput
+                                    clearOnSend
+                                    placeholder="Digite a sua Pergunta"
+                                    disabled={isLoading}
+                                    onSend={question => makeApiRequest(question)}
+                                    // onListen={handleVoiceInput}
+                                    // isActive={isActive}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    // </div>
+                    <>
+                        <div className={styles.chatWrapper}>
+                            <div style={{ display: "flex" }}>
+                                <div
+                                    style={{
+                                        // display: "flex",
+                                        // flexDirection: "column",
+                                        // gap: "10px",
+                                        justifyContent: "end",
+                                        paddingLeft: "10px",
+                                        position: "relative",
+                                        width: "100%"
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            marginBottom: "0",
+                                            height: "calc(100vh - 60px)",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            justifyContent: "end",
+                                            alignItems: "center",
+                                            overflow: "hidden"
+                                        }}
+                                        className={styles.avatar}
+                                    >
+                                        <video
+                                            id="Video no chat"
+                                            src={newPauliteiro}
+                                            controls={false}
+                                            autoPlay={true}
+                                            loop
+                                            width="100%"
+                                            muted
+                                            disablePictureInPicture
+                                            controlsList="nodownload"
+                                            className={styles.Avatarchat}
+                                        />
+
+                                        {isActive ? (
+                                            <button className={styles.btnVoiceRedondo} style={{ position: "absolute" }}>
+                                                <Record24Regular color="#1d9dff" primaryFill="rgb(29,157,255)" />
+                                            </button>
+                                        ) : (
+                                            <button className={styles.btnVoiceRedondo} style={{ position: "absolute" }}>
+                                                <Mic28Filled /> 
+                                            </button>
+                                        )}
+                                    </div>
+                                    {/* <div> */}
+                                    <div
+                                        id="linha 461"
+                                        className={styles.volumeNotMobile}
+                                        onClick={() => {
+                                            setIsSoundOn(!isSoundOn);
+                                            // isSoundOn ? setaudiostatus("pause") : setaudiostatus("resume");
+                                        }}
+                                    >
+                                        {isSoundOn ? (
+                                            <BsVolumeUpFill style={{ color: "white" }} size={32} />
+                                        ) : (
+                                            <BsVolumeMuteFill style={{ color: "white" }} size={32} />
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                //className={styles.formContent}
+                                id="questionchat"
+                                style={{
+                                    paddingTop: "20px",
+                                    paddingLeft: "10px",
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    flexDirection: "column"
+                                }}
+                                className={styles.questionchat}
+                            >
+                                {/*/here*/}
+                                <div className={styles.boxAnswer} style={{ maxHeight: "100vh", paddingTop: "25px", overflowY: "scroll", paddingRight: "10px" }}>
+                                    {answers.map((answer, index) => (
+                                        <div key={index}>
+                                            <UserChatMessage message={answer[0]} />
+                                            <div className={styles.chatMessageGpt} ref={chatMessageStreamEnd}>
+                                                <Answer
+                                                    key={index}
+                                                    answer={answer[1]}
+                                                    isSelected={selectedAnswer === index && activeAnalysisPanelTab !== undefined}
+                                                    onCitationClicked={c => onShowCitation(c, index)}
+                                                    isStreaming={false}
+                                                    onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab, index)}
+                                                    onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab, index)}
+                                                    onFollowupQuestionClicked={q => makeApiRequest(q)}
+                                                    showFollowupQuestions={useSuggestFollowupQuestions && answers.length - 1 === index}
+                                                    playsound={isSoundOn}
+                                                    language={language}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {isLoading && (
+                                        <>
+                                            <UserChatMessage message={lastQuestionRef.current} />
+                                            <div className={styles.chatMessageGptMinWidth}>
+                                                <AnswerLoading />
+                                            </div>
+                                        </>
+                                    )}
+                                    {error ? (
+                                        <>
+                                            <UserChatMessage message={lastQuestionRef.current} />
+                                            <div className={styles.chatMessageGptMinWidth}>
+                                                <AnswerError error={error.toString()} onRetry={() => makeApiRequest(lastQuestionRef.current)} />
+                                            </div>
+                                        </>
+                                    ) : null}
+
+                                    <div />
+                                </div>
+
+                                <div
+                                    style={{
+                                        position: "sticky",
+                                        bottom: 0,
+                                        /*paddingTop: '15px',*/
+                                        background: "white"
+                                    }}
+                                    className={styles.wrapInputs}
+                                >
+                                    <ClearChatButton
+                                        className={styles.commandButtonDelete}
+                                        onClick={clearChat}
+                                        disabled={!lastQuestionRef.current || isLoading}
+                                    />
+
+                                    <QuestionInput
+                                        clearOnSend
+                                        placeholder="Digite a sua Pergunta"
+                                        disabled={isLoading}
+                                        onSend={question => makeApiRequest(question)}
+                                        // onListen={handleVoiceInput}
+                                        // isActive={isActive}
+                                    />
+
+                                    <div className={styles.volumeAvatar}>
+                                        <div
+                                            id="linha 552"
+                                            className={styles.volumeMobile}
+                                            onClick={() => {
+                                                setIsSoundOn(!isSoundOn);
+                                                // isSoundOn ? setaudiostatus("pause") : setaudiostatus("resume");
+                                            }}
+                                        >
+                                            {isSoundOn ? (
+                                                <BsVolumeUpFill style={{ color: "white" }} size={32} />
+                                            ) : (
+                                                <BsVolumeMuteFill style={{ color: "white" }} size={32} />
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )}
+            </div>
+
+            {/* {answers.length > 0 && activeAnalysisPanelTab && (
+                <div className={styles.AnalisesPanel}>
                     <AnalysisPanel
                         className={styles.chatAnalysisPanel}
                         activeCitation={activeCitation}
@@ -376,138 +741,10 @@ const Chat = () => {
                         citationHeight="810px"
                         answer={answers[selectedAnswer][1]}
                         activeTab={activeAnalysisPanelTab}
+                        // setActiveAnalysisPanelTab={closeAnalysisPanel}
                     />
-                )}
-
-                <Panel
-                    headerText="Configure answer generation"
-                    isOpen={isConfigPanelOpen}
-                    isBlocking={false}
-                    onDismiss={() => setIsConfigPanelOpen(false)}
-                    closeButtonAriaLabel="Close"
-                    onRenderFooterContent={() => <DefaultButton onClick={() => setIsConfigPanelOpen(false)}>Close</DefaultButton>}
-                    isFooterAtBottom={true}
-                >
-                    <TextField
-                        className={styles.chatSettingsSeparator}
-                        defaultValue={promptTemplate}
-                        label="Override prompt template"
-                        multiline
-                        autoAdjustHeight
-                        onChange={onPromptTemplateChange}
-                    />
-
-                    <Slider
-                        className={styles.chatSettingsSeparator}
-                        label="Temperature"
-                        min={0}
-                        max={1}
-                        step={0.1}
-                        defaultValue={temperature}
-                        onChange={onTemperatureChange}
-                        showValue
-                        snapToStep
-                    />
-
-                    <SpinButton
-                        className={styles.chatSettingsSeparator}
-                        label="Minimum search score"
-                        min={0}
-                        step={0.01}
-                        defaultValue={minimumSearchScore.toString()}
-                        onChange={onMinimumSearchScoreChange}
-                    />
-
-                    <SpinButton
-                        className={styles.chatSettingsSeparator}
-                        label="Minimum reranker score"
-                        min={1}
-                        max={4}
-                        step={0.1}
-                        defaultValue={minimumRerankerScore.toString()}
-                        onChange={onMinimumRerankerScoreChange}
-                    />
-
-                    <SpinButton
-                        className={styles.chatSettingsSeparator}
-                        label="Retrieve this many search results:"
-                        min={1}
-                        max={50}
-                        defaultValue={retrieveCount.toString()}
-                        onChange={onRetrieveCountChange}
-                    />
-                    <TextField className={styles.chatSettingsSeparator} label="Exclude category" onChange={onExcludeCategoryChanged} />
-
-                    {showSemanticRankerOption && (
-                        <Checkbox
-                            className={styles.chatSettingsSeparator}
-                            checked={useSemanticRanker}
-                            label="Use semantic ranker for retrieval"
-                            onChange={onUseSemanticRankerChange}
-                        />
-                    )}
-                    <Checkbox
-                        className={styles.chatSettingsSeparator}
-                        checked={useSemanticCaptions}
-                        label="Use query-contextual summaries instead of whole documents"
-                        onChange={onUseSemanticCaptionsChange}
-                        disabled={!useSemanticRanker}
-                    />
-                    <Checkbox
-                        className={styles.chatSettingsSeparator}
-                        checked={useSuggestFollowupQuestions}
-                        label="Suggest follow-up questions"
-                        onChange={onUseSuggestFollowupQuestionsChange}
-                    />
-
-                    {showGPT4VOptions && (
-                        <GPT4VSettings
-                            gpt4vInputs={gpt4vInput}
-                            isUseGPT4V={useGPT4V}
-                            updateUseGPT4V={useGPT4V => {
-                                setUseGPT4V(useGPT4V);
-                            }}
-                            updateGPT4VInputs={inputs => setGPT4VInput(inputs)}
-                        />
-                    )}
-
-                    {showVectorOption && (
-                        <VectorSettings
-                            defaultRetrievalMode={retrievalMode}
-                            showImageOptions={useGPT4V && showGPT4VOptions}
-                            updateVectorFields={(options: VectorFieldOptions[]) => setVectorFieldList(options)}
-                            updateRetrievalMode={(retrievalMode: RetrievalMode) => setRetrievalMode(retrievalMode)}
-                        />
-                    )}
-
-                    {useLogin && (
-                        <Checkbox
-                            className={styles.chatSettingsSeparator}
-                            checked={useOidSecurityFilter || requireAccessControl}
-                            label="Use oid security filter"
-                            disabled={!isLoggedIn(client) || requireAccessControl}
-                            onChange={onUseOidSecurityFilterChange}
-                        />
-                    )}
-                    {useLogin && (
-                        <Checkbox
-                            className={styles.chatSettingsSeparator}
-                            checked={useGroupsSecurityFilter || requireAccessControl}
-                            label="Use groups security filter"
-                            disabled={!isLoggedIn(client) || requireAccessControl}
-                            onChange={onUseGroupsSecurityFilterChange}
-                        />
-                    )}
-
-                    <Checkbox
-                        className={styles.chatSettingsSeparator}
-                        checked={shouldStream}
-                        label="Stream chat completion responses"
-                        onChange={onShouldStreamChange}
-                    />
-                    {useLogin && <TokenClaimsDisplay />}
-                </Panel>
-            </div>
+                </div>
+            )} */}
         </div>
     );
 };

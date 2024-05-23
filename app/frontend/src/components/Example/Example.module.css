@@ -13,16 +13,16 @@
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding-top: 30px;
     margin-bottom: 5px;
     cursor: pointer;
 }
+
 .eacheli {
-    border: 1px;
-    background: white;
-    border-style: solid;
-    border: 1;
-    border-color: #1d9dff;
+    border: 1px solid;
+    border-color: #ff6f61;
+    padding: 9px;
+    border-radius: 5px;
 }
 
 .eacheli:hover {
@@ -31,8 +31,6 @@
 
 .exampleText {
     margin: 0;
-    font-size: 22px;
-    margin: 0;
     font-size: 1em;
     word-break: break-word;
     display: flex;
@@ -40,12 +38,9 @@
     cursor: pointer;
 }
 
-@media (max-wdith: 800px) {
+@media (max-width: 800px) {
     .exampleText {
-        margin: 0;
-        font-size: 17px;
-        width: 255px;
-        height: 80px;
+        font-size: 0.85em;
     }
 }
 
@@ -74,13 +69,101 @@
 }
 
 .languageButtons button:nth-child(1) svg {
-    fill: #1d9dff; /* Cor para a bandeira do inglês */
+    fill: #1d9dff;
 }
 
 .languageButtons button:nth-child(2) svg {
-    fill: #ffd700; /* Cor para a bandeira do francês */
+    fill: #ffd700;
 }
 
 .languageButtons button:nth-child(3) svg {
-    fill: #ff6347; /* Cor para a bandeira do espanhol */
+    fill: #ff6347;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8d7da;
+    padding: 10px 20px;
+    position: relative;
+}
+
+.menuIcon {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.title {
+    margin: 0;
+    font-size: 18px;
+    color: #b03a2e;
+}
+
+.languageButtons {
+    display: flex;
+    gap: 10px;
+}
+
+.flagIcon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 10px;
+}
+
+.dropdownMenu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdownMenu li {
+    margin-bottom: 10px;
+}
+
+.dropdownMenu li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+}
+
+.dropdownMenu li a:hover {
+    color: #007bff;
+}
+
+.suggestionsTitle {
+    margin-top: 20px;
+    font-size: 1.6em; /* Ajuste o tamanho da fonte conforme necessário */
+    color: #d9534f; /* Cor do título */
+}
+
+.examplesNavList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.exampleText {
+    margin: 0;
+    font-size: 1.5em;
+    word-break: break-word;
+    display: flex;
+    padding: 10px;
+    cursor: pointer;
+}
+
+@media (max-width: 800px) {
+    .exampleText {
+        font-size: 0.85em;
+    }
 }

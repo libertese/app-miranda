@@ -215,11 +215,12 @@ export function Component(): JSX.Element {
             </div>
             <div className={styles.askBottomSection}>
                 {isLoading && <Spinner label="Generating answer" />}
-                {!lastQuestionRef.current && <ExampleList onExampleClicked={onExampleClicked} useGPT4V={useGPT4V} />}
+                {!lastQuestionRef.current && <ExampleList language2="" onExampleClicked={onExampleClicked} useGPT4V={useGPT4V} />}
                 {!isLoading && answer && !error && (
                     <div className={styles.askAnswerContainer}>
                         <Answer
                             answer={answer}
+                            playsound={true}
                             isStreaming={false}
                             onCitationClicked={x => onShowCitation(x)}
                             onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab)}
@@ -232,7 +233,7 @@ export function Component(): JSX.Element {
                         <AnswerError error={error.toString()} onRetry={() => makeApiRequest(lastQuestionRef.current)} />
                     </div>
                 ) : null}
-                {activeAnalysisPanelTab && answer && (
+                {/* {activeAnalysisPanelTab && answer && (
                     <AnalysisPanel
                         className={styles.askAnalysisPanel}
                         activeCitation={activeCitation}
@@ -241,7 +242,7 @@ export function Component(): JSX.Element {
                         answer={answer}
                         activeTab={activeAnalysisPanelTab}
                     />
-                )}
+                )} */}
             </div>
 
             <Panel

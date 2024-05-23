@@ -4,12 +4,14 @@ interface Props {
     text: string;
     value: string;
     onClick: (value: string) => void;
+    colorText?: string;
+    colorHeader?: string;
 }
 //aqui que ele faz as perguntas pre determinadas o layout soh deixa o header  entao esse iframe nao precisa pq o chat eh o todo da pagina
 // o todo da pagina eh o chat
 // esse example.tsx é soh a parte das perguntas ele foi criado aqui
 
-export const Example = ({ text, value, onClick }: Props) => {
+export const Example = ({ text, value, onClick, colorHeader, colorText }: Props) => {
     return (
         //<div className={styles.container}>
         //    <div className={styles.row}>
@@ -21,7 +23,9 @@ export const Example = ({ text, value, onClick }: Props) => {
 
         //codigo original
         <div className={styles.container} onClick={() => onClick(value)}>
-            <p className={styles.exampleText}>{text}</p>
+            <p className={styles.exampleText} style={{ color: colorText }}>
+                {text}
+            </p>
         </div>
     );
 };
