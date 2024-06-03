@@ -1,3 +1,67 @@
+.popupContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.modalContent {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    font-size: 15px;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.closeButton {
+    background: transparent;
+    border: none;
+    font-size: 30px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: #aaa;
+    transition: color 0.3s;
+}
+
+.closeButton:hover {
+    color: #000;
+}
+
+.buttonGroup {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.optionButton {
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition:
+        background-color 0.3s,
+        transform 0.3s;
+}
+
+.optionButton:hover {
+    background-color: #005a9e;
+    transform: scale(1.05);
+}
+
+.optionButton:active {
+    background-color: #003f6b;
+    transform: scale(1);
+}
+
 .container {
     flex: 1;
     display: flex;
@@ -168,26 +232,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    width: 600px; /* Adjust the width as needed */
-    max-height: 500px; /* Adjust the max-height as needed */
-    overflow-y: auto; /* Enable scrolling if content exceeds max-height */
-    border-radius: 4px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-    max-width: 90%;
-}
-
-.popupContainer:visited {
-    border-style: hidden;
 }
 
 .overlay {
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
 }
 
 .closeButton {

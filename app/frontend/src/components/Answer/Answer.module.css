@@ -135,3 +135,22 @@ sup {
     content: "";
     animation: loading 1s infinite;
 }
+
+.buttonsAnswerFeedback {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.buttonLike {
+    padding-right: 8px;
+}
+
+.likeCliked {
+    background-color: rgb(50, 205, 50, 0.2);
+}
+
+.dislikeCliked {
+    background-color: rgb(255, 0, 0, 0.2);
+}

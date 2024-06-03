@@ -4,7 +4,8 @@ import DOMPurify from "dompurify";
 
 import styles from "./Answer.module.css";
 
-import { ChatAppResponse, getCitationFilePath } from "../../api";
+import { AnswerFeedbackRequest, ChatAppResponse, getCitationFilePath, feedbackApi } from "../../api";
+
 import { parseAnswerToHtml } from "./AnswerParser";
 import { AnswerIcon } from "./AnswerIcon";
 import mirandaLogo from "../../assets/miranda.png";
@@ -131,6 +132,43 @@ export const Answer = ({
         setaudiostatus("initial");
     }, [answer]);
 
+    const [positiveFeedback, setPositiveFeedback] = useState<boolean>(false);
+    const [negativeFeedback, setNegativeFeedback] = useState<boolean>(false);
+    const sendPositiveFeedback = async (event: React.MouseEvent<HTMLDivElement, MouseEvent>, _feedbackId: string) => {
+        if (positiveFeedback == true) setPositiveFeedback(false);
+        else {
+            setPositiveFeedback(true);
+            setNegativeFeedback(false);
+        }
+
+        try {
+            const request: AnswerFeedbackRequest = {
+                feedbackId: String(answer),
+                feedback: true
+            };
+            const result = await feedbackApi(request);
+        } catch (e) {
+            console.log("Entrou no cast ", e);
+        }
+    };
+
+    const sendNegativeFeedback = async (event: React.MouseEvent<HTMLDivElement, MouseEvent>, _feedbackId: string) => {
+        if (negativeFeedback == true) setNegativeFeedback(false);
+        else {
+            setNegativeFeedback(true);
+            setPositiveFeedback(false);
+        }
+        try {
+            const request: AnswerFeedbackRequest = {
+                feedbackId: String(answer),
+                feedback: false
+            };
+            const result = await feedbackApi(request);
+        } catch (e) {
+            console.log("Entrou no cast ", e);
+        }
+    };
+
     return (
         // <Stack className={`${styles.answerContainer} ${isSelected && styles.selected}`} verticalAlign="space-between">
         //     <Stack.Item>
@@ -180,16 +218,19 @@ export const Answer = ({
                     <Stack horizontal horizontalAlign="space-between">
                         <img src={mirandaLogo} alt="Miranda do Douro Logo" aria-label="Miranda do Douro Logo" width="28" height="28"></img>
                         <div></div>
+                        <div className={styles.buttonsAnswerFeedback}>
+                            <div className={styles.buttonLike} onClick={event => sendPositiveFeedback(event, answer)}>
+                                <ThumbLike24Regular primaryFill="rgb(50, 205, 50)" className={`${styles.likeCliked} ${styles.like}`}></ThumbLike24Regular>
+                            </div>
+                            <div className={styles.buttonDislike} onClick={event => sendNegativeFeedback(event, answer)}>
+                                <ThumbDislike24Regular
+                                    primaryFill="rgb(255, 0, 0)"
+                                    className={`${styles.dislikeCliked} ${styles.dislike}`}
+                                ></ThumbDislike24Regular>
+                            </div>
+                        </div>
                     </Stack>
                 </Stack.Item>
-                {/* <div className={styles.buttonsAnswerFeedback}>
-                    <div className={styles.buttonLike}>
-                        <ThumbLike24Regular primaryFill="rgb(50, 205, 50)" className={`${styles.likeCliked} ${styles.like}`}></ThumbLike24Regular>
-                    </div>
-                    <div className={styles.buttonDislike}>
-                        <ThumbDislike24Regular primaryFill="rgb(255, 0, 0)" className={`${styles.dislikeCliked} ${styles.dislike}`}></ThumbDislike24Regular>
-                    </div>
-                </div> */}
                 {/* <div className={styles.buttonsAnswerFeedback}>
                     <div className={styles.buttonLike} onClick={event => sendPositiveFeedback(event, answer.questionid)}>
                         <ThumbLike24Regular

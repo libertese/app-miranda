@@ -49,7 +49,7 @@ const Chat = () => {
 
     const handleMenuItemClick = (item: string) => {
         setSelectedMenuItem(item);
-        console.log(item);
+        setShowPopupDisclaimer(false); // Fechar a modal quando o botão for clicado
         switch (item) {
             case "restaurante":
                 setColor("#B9A149");
@@ -386,46 +386,36 @@ const Chat = () => {
     return (
         <div className={styles.container}>
             <Modal
-                isOpen={showPopup}
-                onRequestClose={closePopup}
-                contentLabel="Custom Pop-up"
-                className={styles.popupContainer}
-                overlayClassName={styles.overlay}
-            >
-                <div>
-                    <button className={styles.closeButton} onClick={closePopup}>
-                        x Fechar
-                    </button>
-                    <h2>Sobre o GPM</h2>
-                    <p>O Guia Prático do Município é uma ferramenta ao dispor de todos os cidadãos, que pretende preservar e propagar a Cultura Regional.</p>
-                    <p>
-                        O GPM é baseado no modelo de linguagem GPT, criado pela OpenAI e pela Microsoft e disponibilizado na plataforma Microsoft Azure OpenAI.
-                    </p>
-                    <p>
-                        O GPM foi desenvolvido pela parceria CIT-TTM (Centro de Inovação e Tecnologia Terras de Trás-os-Montes) e a TAC Services Portugal, com o
-                        apoio da Microsoft, tendo como objetivo a interação com o cidadão através de linguagem natural
-                    </p>
-                </div>
-            </Modal>
-            <Modal
                 isOpen={showPopupDisclaimer}
                 onRequestClose={closePopupDisclaimer}
                 contentLabel="Custom Pop-up"
                 className={styles.popupContainer}
                 overlayClassName={styles.overlay}
             >
-                <div>
+                <div className={styles.modalContent}>
                     <button className={styles.closeButton} onClick={closePopupDisclaimer}>
-                        x
+                        &times;
                     </button>
-                    <br></br>
-                    <h2> Bem-vindo à versão Beta do GPM!</h2>
+                    <h2>Bem-vindo à versão Beta do GPM!</h2>
                     <p>Para melhorar o assistente virtual, as perguntas e as respostas geradas serão armazenadas por um período de 7 dias.</p>
                     <p>
                         Pedimos que não insira dados pessoais quando colocar as suas questões. Caso o faça, os mesmos serão guardados, à semelhança de todas as
                         perguntas e respostas, durante 7 dias, para efeitos de melhoria do serviço. Após esse prazo, serão eliminados.
                     </p>
                     <p>Use as sugestões de perguntas, ou coloque sua própria questão na área indicada:</p>
+                    <hr></hr>
+                    <p>Quais são as áreas que você tem interesse em saber?</p>
+                    <div className={styles.buttonGroup}>
+                        <button className={styles.optionButton} onClick={() => handleMenuItemClick("restaurante")}>
+                            Restaurantes
+                        </button>
+                        <button className={styles.optionButton} onClick={() => handleMenuItemClick("turismo")}>
+                            Turismo
+                        </button>
+                        <button className={styles.optionButton} onClick={() => handleMenuItemClick("prefeitura")}>
+                            Prefeitura
+                        </button>
+                    </div>
                 </div>
             </Modal>
             <div className={styles.header} style={{ backgroundColor: colorHeader }}>

@@ -24,6 +24,11 @@ export type AskResponse = {
     error?: string;
 };
 
+export type AnswerFeedbackRequest = {
+    feedbackId: string;
+    feedback: boolean;
+};
+
 export type ChatAppRequestOverrides = {
     retrieval_mode?: RetrievalMode;
     semantic_ranker?: boolean;
