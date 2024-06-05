@@ -219,10 +219,10 @@ export const Answer = ({
                         <img src={mirandaLogo} alt="Miranda do Douro Logo" aria-label="Miranda do Douro Logo" width="28" height="28"></img>
                         <div></div>
                         <div className={styles.buttonsAnswerFeedback}>
-                            <div className={styles.buttonLike} onClick={event => sendPositiveFeedback(event, answer)}>
+                            <div className={styles.buttonLike} onClick={event => sendPositiveFeedback(event, answer.choices[0].message.content)}>
                                 <ThumbLike24Regular primaryFill="rgb(50, 205, 50)" className={`${styles.likeCliked} ${styles.like}`}></ThumbLike24Regular>
                             </div>
-                            <div className={styles.buttonDislike} onClick={event => sendNegativeFeedback(event, answer)}>
+                            <div className={styles.buttonDislike} onClick={event => sendNegativeFeedback(event, answer.choices[0].message.content)}>
                                 <ThumbDislike24Regular
                                     primaryFill="rgb(255, 0, 0)"
                                     className={`${styles.dislikeCliked} ${styles.dislike}`}
@@ -231,44 +231,13 @@ export const Answer = ({
                         </div>
                     </Stack>
                 </Stack.Item>
-                {/* <div className={styles.buttonsAnswerFeedback}>
-                    <div className={styles.buttonLike} onClick={event => sendPositiveFeedback(event, answer.questionid)}>
-                        <ThumbLike24Regular
-                            primaryFill="rgb(50, 205, 50)"
-                            className={`${positiveFeedback ? styles.likeCliked : ""} ${styles.like}`}
-                        ></ThumbLike24Regular>
-                    </div>
-                    <div className={styles.buttonDislike} onClick={event => sendNegativeFeedback(event, answer.questionid)}>
-                        <ThumbDislike24Regular
-                            primaryFill="rgb(255, 0, 0)"
-                            className={`${negativeFeedback ? styles.dislikeCliked : ""} ${styles.dislike}`}
-                        ></ThumbDislike24Regular>
-                    </div>
-                </div> */}
             </div>
             <Stack.Item grow>
-                <div className={styles.answerText} dangerouslySetInnerHTML={{ __html: sanitizedAnswerHtml.replace('"', "").replace('"', "") }}></div>
+                <div
+                    className={styles.answerText}
+                    dangerouslySetInnerHTML={{ __html: sanitizedAnswerHtml.replace('"', "").replace('"', "").replace("¹", "") }}
+                ></div>
             </Stack.Item>
-            {!!parsedAnswer.citations.length && (
-                <Stack.Item>
-                    <Stack horizontal wrap tokens={{ childrenGap: 5 }}>
-                        <span className={styles.citationLearnMore}>Citações:</span>
-                        {parsedAnswer.citations.map((x, i) => {
-                            const path = getCitationFilePath(x);
-                            return (
-                                <a
-                                    key={i}
-                                    className={styles.citation}
-                                    title={` ${x.replace(/[-\d+]|_[pP]ag|\.[pP][dD][fF]/g, "").replace(/_/g, " ")}`}
-                                    onClick={() => onCitationClicked(path)}
-                                >
-                                    {`${++i}. ${x.replace(/[-\d+]|_[pP]ag|\.[pP][dD][fF]/g, "").replace(/_/g, " ")}`}
-                                </a>
-                            );
-                        })}
-                    </Stack>
-                </Stack.Item>
-            )}
             {!!followupQuestions?.length && showFollowupQuestions && onFollowupQuestionClicked && (
                 <Stack.Item>
                     <Stack horizontal wrap className={`${!!parsedAnswer.citations.length ? styles.followupQuestionsList : ""}`} tokens={{ childrenGap: 6 }}>

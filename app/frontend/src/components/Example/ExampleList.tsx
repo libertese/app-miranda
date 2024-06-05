@@ -85,6 +85,59 @@ const EXAMPLES_TURISMO: { [key: string]: string[] } = {
         "Quais atividades ao ar livre gostarias de realizar no Parque Natural do Douro Internacional?"
     ]
 };
+const EXAMPLES_HISTORIA: { [key: string]: string[] } = {
+    en: [
+        "Which tourist spot in Miranda do Douro fascinates you more: the Aqueduct of Vilarinho or the Castle of Miranda do Douro? Why?",
+        "Have you had the opportunity to visit the Museum of Terra de Miranda? What do you think of its collection of archaeological artifacts?",
+        "Which aspect of the War of Mirandum, which occurred during the Seven Years' War, impresses you the most?",
+        "What activities would you like to do while exploring the prehistoric rock sanctuaries in Miranda do Douro?"
+    ],
+    pt: [
+        "Qual ponto turístico em Miranda do Douro mais te fascina: o Aqueduto do Vilarinho ou o Castelo de Miranda do Douro? Por quê?",
+        "Você já teve a oportunidade de visitar o Museu da Terra de Miranda? O que acha da sua coleção de artefatos arqueológicos?",
+        "Qual aspecto da Guerra do Mirandum, que ocorreu durante a Guerra dos Sete Anos, mais te impressiona?",
+        "Quais atividades você gostaria de realizar ao explorar os santuários rupestres pré-históricos em Miranda do Douro?"
+    ],
+    es: [
+        "¿Qué punto turístico de Miranda do Douro te fascina más: el Acueducto de Vilarinho o el Castillo de Miranda do Douro? ¿Por qué?",
+        "¿Has tenido la oportunidad de visitar el Museo de Tierra de Miranda? ¿Qué opinas de su colección de artefactos arqueológicos?",
+        "¿Qué aspecto de la Guerra del Mirandum, que ocurrió durante la Guerra de los Siete Años, te impresiona más?",
+        "¿Qué actividades te gustaría realizar al explorar los santuarios rupestres prehistóricos en Miranda do Douro?"
+    ],
+    pt_pt: [
+        "Qual ponto turístico de Miranda do Douro gostarias de visitar primeiro: o Aqueduto do Vilarinho ou o Castelo de Miranda do Douro? Porquê?",
+        "Já ouviste falar do Museu da Terra de Miranda? O que achas da sua coleção de artefactos arqueológicos?",
+        "Qual aspecto da Guerra do Mirandum, que ocorreu durante a Guerra dos Sete Anos, mais te impressiona?",
+        "Quais atividades ao ar livre gostarias de realizar ao explorar os santuários rupestres pré-históricos em Miranda do Douro?"
+    ]
+};
+
+const EXAMPLES_CULTURA: { [key: string]: string[] } = {
+    en: [
+        "Which legend of Miranda do Douro intrigues you more: the Legend of the Moura or the Legend of the Nazo? Why?",
+        "Have you had the opportunity to watch the 'Velha' dance or the 'Carocho' festival? What did you think of these traditions?",
+        "What is your opinion on the preservation and revitalization of the Mirandese language in modern culture?",
+        "Which aspect of Miranda do Douro's craftsmanship interests you more: the making of the 'Capa de Honras' or the production of bagpipes?"
+    ],
+    pt: [
+        "Qual lenda de Miranda do Douro mais te intriga: a Lenda da Moura ou a Lenda do Nazo? Por quê?",
+        "Você já teve a oportunidade de assistir à dança da 'Velha' ou à festa do 'Carocho'? O que achou dessas tradições?",
+        "Qual é a sua opinião sobre a preservação e a revitalização da língua mirandesa na cultura moderna?",
+        "Qual aspecto do artesanato de Miranda do Douro mais desperta o seu interesse: a confecção da 'Capa de Honras' ou a produção de gaitas-de-foles?"
+    ],
+    es: [
+        "¿Qué leyenda de Miranda do Douro te intriga más: la Leyenda de la Moura o la Leyenda del Nazo? ¿Por qué?",
+        "¿Has tenido la oportunidad de ver la danza de la 'Vieja' o la fiesta del 'Carocho'? ¿Qué opinas de estas tradiciones?",
+        "¿Cuál es tu opinión sobre la preservación y revitalización del idioma mirandés en la cultura moderna?",
+        "¿Qué aspecto de la artesanía de Miranda do Douro te despierta más interés: la confección de la 'Capa de Honras' o la producción de gaitas de foles?"
+    ],
+    pt_pt: [
+        "Qual lenda de Miranda do Douro mais te intriga: a Lenda da Moura ou a Lenda do Nazo? Porquê?",
+        "Já tiveste a oportunidade de assistir à dança da 'Velha' ou à festa do 'Carocho'? O que achaste dessas tradições?",
+        "Qual é a tua opinião sobre a preservação e a revitalização da língua mirandesa na cultura moderna?",
+        "Qual aspecto do artesanato de Miranda do Douro mais desperta o teu interesse: a confecção da 'Capa de Honras' ou a produção de gaitas-de-foles?"
+    ]
+};
 
 interface Props {
     onExampleClicked: (lang: string) => void;
@@ -101,10 +154,15 @@ export const ExampleList: React.FC<Props> = ({ onExampleClicked, language2, sele
     switch (selectedMenuItem) {
         case "restaurante":
             examples = EXAMPLES_RESTURANTES[language2];
-            console.log("restaurantes" + examples);
             break;
         case "turismo":
             examples = EXAMPLES_TURISMO[language2];
+            break;
+        case "historia":
+            examples = EXAMPLES_HISTORIA[language2];
+            break;
+        case "cultura":
+            examples = EXAMPLES_CULTURA[language2];
             break;
         default:
             examples = EXAMPLES[language2];

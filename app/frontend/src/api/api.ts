@@ -1,6 +1,6 @@
 const BACKEND_URI = "";
 
-import { ChatAppResponse, ChatAppResponseOrError, ChatAppRequest, Config, SimpleAPIResponse, AnswerFeedbackRequest } from "./models";
+import { ChatAppResponse, ChatAppResponseOrError, ChatAppRequest, Config, SimpleAPIResponse, AnswerFeedbackRequest, AnswerFeedbackResponse } from "./models";
 import { useLogin, appServicesToken } from "../authConfig";
 
 export function getHeaders(idToken: string | undefined): Record<string, string> {

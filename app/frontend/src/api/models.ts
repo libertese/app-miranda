@@ -82,6 +82,12 @@ export type ChatAppResponse = {
     choices: ResponseChoice[];
 };
 
+export type AnswerFeedbackResponse = {
+    feedbackId: string;
+    feedback: boolean;
+    error?: string;
+};
+
 export type ChatAppRequestContext = {
     overrides?: ChatAppRequestOverrides;
 };

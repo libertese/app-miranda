@@ -41,6 +41,7 @@ const Chat = () => {
     const [color, setColor] = useState("#B9A149");
     const [colorHeader, setColorHeader] = useState("#E1D4A7");
     const [menuOpen, setMenuOpen] = useState(false);
+    const [languageTitle, setIlanguageTitle] = useState("Guia Prático do Município");
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
@@ -54,18 +55,33 @@ const Chat = () => {
             case "restaurante":
                 setColor("#B9A149");
                 setColorHeader("#E1D4A7");
+                setIlanguageTitle("Guia Prático do Município - Restaurante");
+
                 break;
             case "turismo":
                 setColor("#1C5D89");
                 setColorHeader("#C5DFEE");
+                setIlanguageTitle("Guia Prático do Município - Turismo");
                 break;
-            case "prefeitura":
+            case "municipio":
                 setColor("#A14637");
                 setColorHeader("#F8D8CF");
+                setIlanguageTitle("Guia Prático do Município - Município");
+                break;
+            case "historia":
+                setColor("#7B3F32"); // nova cor semelhante
+                setColorHeader("#E8CEC4"); // nova cor semelhante
+                setIlanguageTitle("Guia Prático do Município - Historia e Patrimonio");
+                break;
+            case "cultura":
+                setColor("#8A3D2E"); // nova cor semelhante
+                setColorHeader("#EAD4CA"); // nova cor semelhante
+                setIlanguageTitle("Guia Prático do Município - Cultura");
                 break;
             default:
                 setColor("#B9A149");
                 setColorHeader("#E1D4A7");
+                setIlanguageTitle("Guia Prático do Município - Restaurante");
         }
         setMenuOpen(false);
     };
@@ -412,8 +428,16 @@ const Chat = () => {
                         <button className={styles.optionButton} onClick={() => handleMenuItemClick("turismo")}>
                             Turismo
                         </button>
-                        <button className={styles.optionButton} onClick={() => handleMenuItemClick("prefeitura")}>
-                            Prefeitura
+                        <button className={styles.optionButton} onClick={() => handleMenuItemClick("municipio")}>
+                            Municipio
+                        </button>
+                    </div>
+                    <div className={styles.buttonGroup}>
+                        <button className={styles.optionButton} onClick={() => handleMenuItemClick("historia")}>
+                            Historia e Patrimonio
+                        </button>
+                        <button className={styles.optionButton} onClick={() => handleMenuItemClick("cultura")}>
+                            Cultura
                         </button>
                     </div>
                 </div>
@@ -431,14 +455,20 @@ const Chat = () => {
                                     <a onClick={() => handleMenuItemClick("turismo")}>Turismo</a>
                                 </li>
                                 <li>
-                                    <a onClick={() => handleMenuItemClick("prefeitura")}>Prefeitura</a>
+                                    <a onClick={() => handleMenuItemClick("municipio")}>Municipio</a>
+                                </li>
+                                <li>
+                                    <a onClick={() => handleMenuItemClick("historia")}>Historia e Patrimonio</a>
+                                </li>
+                                <li>
+                                    <a onClick={() => handleMenuItemClick("cultura")}>Cultura</a>
                                 </li>
                             </ul>
                         </div>
                     )}
                 </div>
                 <h1 className={styles.title} style={{ color: color }}>
-                    Guia Prático do Município
+                    {languageTitle}
                 </h1>
                 <div className={styles.languageButtons}>
                     <button onClick={() => handleLanguageChange("en")}>
