@@ -52,10 +52,10 @@ const Chat = () => {
         setSelectedMenuItem(item);
         setShowPopupDisclaimer(false); // Fechar a modal quando o botão for clicado
         switch (item) {
-            case "restaurante":
+            case "geral":
                 setColor("#B9A149");
                 setColorHeader("#E1D4A7");
-                setIlanguageTitle("Guia Prático do Município - Restaurante");
+                setIlanguageTitle("Guia Prático do Município");
 
                 break;
             case "turismo":
@@ -63,10 +63,10 @@ const Chat = () => {
                 setColorHeader("#C5DFEE");
                 setIlanguageTitle("Guia Prático do Município - Turismo");
                 break;
-            case "municipio":
+            case "entidades":
                 setColor("#A14637");
                 setColorHeader("#F8D8CF");
-                setIlanguageTitle("Guia Prático do Município - Município");
+                setIlanguageTitle("Guia Prático do Município - Entidades da região");
                 break;
             case "historia":
                 setColor("#7B3F32"); // nova cor semelhante
@@ -81,7 +81,7 @@ const Chat = () => {
             default:
                 setColor("#B9A149");
                 setColorHeader("#E1D4A7");
-                setIlanguageTitle("Guia Prático do Município - Restaurante");
+                setIlanguageTitle("Guia Prático do Município");
         }
         setMenuOpen(false);
     };
@@ -412,7 +412,7 @@ const Chat = () => {
                     <button className={styles.closeButton} onClick={closePopupDisclaimer}>
                         &times;
                     </button>
-                    <h2>Bem-vindo à versão Beta do GPM!</h2>
+                    <h2>Bem-vindo ao GPM!</h2>
                     <p>Para melhorar o assistente virtual, as perguntas e as respostas geradas serão armazenadas por um período de 7 dias.</p>
                     <p>
                         Pedimos que não insira dados pessoais quando colocar as suas questões. Caso o faça, os mesmos serão guardados, à semelhança de todas as
@@ -422,17 +422,17 @@ const Chat = () => {
                     <hr></hr>
                     <p>Quais são as áreas que você tem interesse em saber?</p>
                     <div className={styles.buttonGroup}>
-                        <button className={styles.optionButton} onClick={() => handleMenuItemClick("restaurante")}>
-                            Restaurantes
-                        </button>
-                        <button className={styles.optionButton} onClick={() => handleMenuItemClick("turismo")}>
-                            Turismo
-                        </button>
-                        <button className={styles.optionButton} onClick={() => handleMenuItemClick("municipio")}>
-                            Municipio
+                        <button className={`${styles.optionButton} ${styles.fullWidthButton}`} onClick={() => handleMenuItemClick("geral")}>
+                            Geral
                         </button>
                     </div>
                     <div className={styles.buttonGroup}>
+                        <button className={styles.optionButton} onClick={() => handleMenuItemClick("turismo")}>
+                            Turismo
+                        </button>
+                        <button className={styles.optionButton} onClick={() => handleMenuItemClick("entidades")}>
+                            Entidades da região
+                        </button>
                         <button className={styles.optionButton} onClick={() => handleMenuItemClick("historia")}>
                             Historia e Patrimonio
                         </button>
@@ -449,13 +449,13 @@ const Chat = () => {
                         <div className={styles.dropdownMenu}>
                             <ul>
                                 <li>
-                                    <a onClick={() => handleMenuItemClick("restaurante")}>Restaurantes</a>
+                                    <a onClick={() => handleMenuItemClick("geral")}>Geral</a>
                                 </li>
                                 <li>
                                     <a onClick={() => handleMenuItemClick("turismo")}>Turismo</a>
                                 </li>
                                 <li>
-                                    <a onClick={() => handleMenuItemClick("municipio")}>Municipio</a>
+                                    <a onClick={() => handleMenuItemClick("entidades")}>Entidades da região</a>
                                 </li>
                                 <li>
                                     <a onClick={() => handleMenuItemClick("historia")}>Historia e Patrimonio</a>
@@ -472,17 +472,16 @@ const Chat = () => {
                 </h1>
                 <div className={styles.languageButtons}>
                     <button onClick={() => handleLanguageChange("en")}>
-                        <img
-                            src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                            alt="English Flag"
-                            className={styles.flagIcon}
-                        />
+                        <span className={styles.flagIcon}>EN</span>
                     </button>
                     <button onClick={() => handleLanguageChange("pt")}>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" alt="Brazilian Flag" className={styles.flagIcon} />
+                        <span className={styles.flagIcon}>PT</span>
                     </button>
                     <button onClick={() => handleLanguageChange("es")}>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg" alt="Spanish Flag" className={styles.flagIcon} />
+                        <span className={styles.flagIcon}>ES</span>
+                    </button>
+                    <button onClick={() => handleLanguageChange("fr")}>
+                        <span className={styles.flagIcon}>FR</span>
                     </button>
                 </div>
             </div>

@@ -30,35 +30,49 @@ const EXAMPLES: { [key: string]: string[] } = {
         "Como vês a importância das políticas de preservação ambiental implementadas pela câmara municipal?",
         "Que tipo de eventos culturais ou sociais gostarias de ver promovidos pela câmara municipal de Miranda do Douro?",
         "Quais são os principais grupos de Pauliteiros de Miranda?"
+    ],
+    fr: [
+        "Quelle fonction du conseil municipal de Miranda do Douro considérez-vous comme la plus importante pour la qualité de vie des citoyens?",
+        "Pensez-vous que la promotion du tourisme peut apporter des bénéfices significatifs à l'économie locale de Miranda do Douro? Pourquoi?",
+        "Comment voyez-vous l'importance des politiques de préservation de l'environnement mises en place par le conseil municipal?",
+        "Quel type d'événements culturels ou sociaux aimeriez-vous voir promus par le conseil municipal de Miranda do Douro?",
+        "Quels sont les principaux groupes de Pauliteiros de Miranda?"
     ]
 };
 
 const EXAMPLES_RESTURANTES: { [key: string]: string[] } = {
     en: [
-        "Which typical dish from Miranda do Douro would you like to try first and why?",
-        "Are you interested in learning to cook any of the mentioned dishes? If so, which one?",
-        "What do you think of culinary traditions that use local products, such as chestnut soup?",
-        "What is your opinion on the historical and cultural influence on the cuisine of Miranda do Douro, like in the case of alheiras?"
+        "What function of the Miranda do Douro city council do you consider most important for the quality of life of citizens?",
+        "Which tourist spot in Miranda do Douro would you like to visit first and why?",
+        "Which tourist spot in Miranda do Douro fascinates you more: the Aqueduct of Vilarinho or the Castle of Miranda do Douro? Why?",
+        "Which legend of Miranda do Douro intrigues you more: the Legend of the Moura or the Legend of the Nazo? Why?"
     ],
     pt: [
-        "Qual prato típico de Miranda do Douro você gostaria de experimentar primeiro e por quê?",
-        "Você tem algum interesse em aprender a cozinhar algum dos pratos mencionados? Se sim, qual?",
-        "O que você acha das tradições culinárias que utilizam produtos locais, como a sopa de castanha?",
+        "Qual a função da prefeitura de Miranda do Douro que você considera mais importante para a qualidade de vida dos cidadãos?",
+        "Qual ponto turístico de Miranda do Douro você gostaria de visitar primeiro e por quê?",
+        "Qual ponto turístico em Miranda do Douro mais te fascina: o Aqueduto do Vilarinho ou o Castelo de Miranda do Douro? Por quê?",
         "Qual a sua opinião sobre a influência histórica e cultural na gastronomia de Miranda do Douro, como no caso das alheiras?"
     ],
     es: [
-        "¿Qué plato típico de Miranda do Douro te gustaría probar primero y por qué?",
-        "¿Tienes interés en aprender a cocinar alguno de los platos mencionados? Si es así, ¿cuál?",
-        "¿Qué opinas de las tradiciones culinarias que utilizan productos locales, como la sopa de castañas?",
+        "¿Qué función del ayuntamiento de Miranda do Douro consideras más importante para la calidad de vida de los ciudadanos?",
+        "¿Qué punto turístico de Miranda do Douro te gustaría visitar primero y por qué?",
+        "¿Qué punto turístico de Miranda do Douro te fascina más: el Acueducto de Vilarinho o el Castillo de Miranda do Douro? ¿Por qué?",
         "¿Cuál es tu opinión sobre la influencia histórica y cultural en la gastronomía de Miranda do Douro, como en el caso de las alheiras?"
     ],
     pt_pt: [
-        "Qual prato típico de Miranda do Douro gostarias de experimentar primeiro e porquê?",
-        "Tens interesse em aprender a cozinhar algum dos pratos mencionados? Se sim, qual?",
-        "O que achas das tradições culinárias que utilizam produtos locais, como a sopa de castanha?",
+        "Qual a função da câmara municipal de Miranda do Douro que consideras mais importante para a qualidade de vida dos cidadãos?",
+        "Qual ponto turístico de Miranda do Douro gostarias de visitar primeiro e porquê?",
+        "Qual ponto turístico em Miranda do Douro mais te fascina: o Aqueduto do Vilarinho ou o Castelo de Miranda do Douro? Por quê?",
         "Qual a tua opinião sobre a influência histórica e cultural na gastronomia de Miranda do Douro, como no caso das alheiras?"
+    ],
+    fr: [
+        "Quelle fonction du conseil municipal de Miranda do Douro considérez-vous comme la plus importante pour la qualité de vie des citoyens?",
+        "Quel site touristique de Miranda do Douro aimeriez-vous visiter en premier et pourquoi?",
+        "Quel site touristique de Miranda do Douro vous fascine le plus: l'Aqueduc de Vilarinho ou le Château de Miranda do Douro? Pourquoi?",
+        "Quelle est votre opinion sur l'influence historique et culturelle sur la cuisine de Miranda do Douro, comme dans le cas des alheiras?"
     ]
 };
+
 const EXAMPLES_TURISMO: { [key: string]: string[] } = {
     en: [
         "Which tourist spot in Miranda do Douro would you like to visit first and why?",
@@ -83,8 +97,15 @@ const EXAMPLES_TURISMO: { [key: string]: string[] } = {
         "Já ouviste falar da língua mirandesa antes? O que achas da sua importância cultural?",
         "Qual aspecto da história de Miranda do Douro mais desperta o teu interesse?",
         "Quais atividades ao ar livre gostarias de realizar no Parque Natural do Douro Internacional?"
+    ],
+    fr: [
+        "Quel site touristique de Miranda do Douro aimeriez-vous visiter en premier et pourquoi?",
+        "Avez-vous entendu parler de la langue mirandese auparavant? Que pensez-vous de son importance culturelle?",
+        "Quel aspect de l'histoire de Miranda do Douro vous intéresse le plus?",
+        "Quelles activités de plein air aimeriez-vous faire dans le Parc Naturel International du Douro?"
     ]
 };
+
 const EXAMPLES_HISTORIA: { [key: string]: string[] } = {
     en: [
         "Which tourist spot in Miranda do Douro fascinates you more: the Aqueduct of Vilarinho or the Castle of Miranda do Douro? Why?",
@@ -109,6 +130,12 @@ const EXAMPLES_HISTORIA: { [key: string]: string[] } = {
         "Já ouviste falar do Museu da Terra de Miranda? O que achas da sua coleção de artefactos arqueológicos?",
         "Qual aspecto da Guerra do Mirandum, que ocorreu durante a Guerra dos Sete Anos, mais te impressiona?",
         "Quais atividades ao ar livre gostarias de realizar ao explorar os santuários rupestres pré-históricos em Miranda do Douro?"
+    ],
+    fr: [
+        "Quel site touristique de Miranda do Douro vous fascine le plus: l'Aqueduc de Vilarinho ou le Château de Miranda do Douro? Pourquoi?",
+        "Avez-vous eu l'opportunité de visiter le Musée de Terra de Miranda? Que pensez-vous de sa collection d'artefacts archéologiques?",
+        "Quel aspect de la Guerre de Mirandum, qui s'est déroulée pendant la Guerre de Sept Ans, vous impressionne le plus?",
+        "Quelles activités aimeriez-vous faire en explorant les sanctuaires rocheux préhistoriques à Miranda do Douro?"
     ]
 };
 
@@ -136,6 +163,12 @@ const EXAMPLES_CULTURA: { [key: string]: string[] } = {
         "Já tiveste a oportunidade de assistir à dança da 'Velha' ou à festa do 'Carocho'? O que achaste dessas tradições?",
         "Qual é a tua opinião sobre a preservação e a revitalização da língua mirandesa na cultura moderna?",
         "Qual aspecto do artesanato de Miranda do Douro mais desperta o teu interesse: a confecção da 'Capa de Honras' ou a produção de gaitas-de-foles?"
+    ],
+    fr: [
+        "Quelle légende de Miranda do Douro vous intrigue le plus: la Légende de la Moura ou la Légende du Nazo? Pourquoi?",
+        "Avez-vous eu l'opportunité de regarder la danse de la 'Vieille' ou le festival 'Carocho'? Que pensez-vous de ces traditions?",
+        "Quelle est votre opinion sur la préservation et la revitalisation de la langue mirandese dans la culture moderne?",
+        "Quel aspect de l'artisanat de Miranda do Douro vous intéresse le plus: la fabrication de la 'Capa de Honras' ou la production de cornemuses?"
     ]
 };
 
@@ -152,7 +185,7 @@ export const ExampleList: React.FC<Props> = ({ onExampleClicked, language2, sele
     var examples;
     // Função para traduzir o texto com base na linguagem selecionada
     switch (selectedMenuItem) {
-        case "restaurante":
+        case "geral":
             examples = EXAMPLES_RESTURANTES[language2];
             break;
         case "turismo":

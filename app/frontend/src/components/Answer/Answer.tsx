@@ -235,7 +235,7 @@ export const Answer = ({
             <Stack.Item grow>
                 <div
                     className={styles.answerText}
-                    dangerouslySetInnerHTML={{ __html: sanitizedAnswerHtml.replace('"', "").replace('"', "").replace("¹", "") }}
+                    dangerouslySetInnerHTML={{ __html: sanitizedAnswerHtml.replace('"', "").replace('"', "").replace("¹", "").replace("1", "") }}
                 ></div>
             </Stack.Item>
             {!!followupQuestions?.length && showFollowupQuestions && onFollowupQuestionClicked && (

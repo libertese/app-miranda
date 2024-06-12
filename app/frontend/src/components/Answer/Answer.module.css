@@ -80,15 +80,6 @@
     cursor: pointer;
 }
 
-.supContainer {
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.supContainer:hover {
-    text-decoration: underline;
-}
-
 sup {
     position: relative;
     display: inline-flex;
