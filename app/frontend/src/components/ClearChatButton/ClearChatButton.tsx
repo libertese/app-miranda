@@ -21,8 +21,9 @@ const getButtonText = (language?: string): string => {
             return "Chat löschen";
         case "pt":
             return "Limpar chat";
-        default:
+        case "en":
             return "Clear chat";
+            return "";
     }
 };
 

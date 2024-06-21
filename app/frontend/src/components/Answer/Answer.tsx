@@ -105,7 +105,7 @@ export const Answer = ({
             //const syn = new sdk.SpeechSynthesizer(speechConfig, audioConfig)
             const textToSpeak = resposta; // Replace with your desired text
             synthesizer.speakTextAsync(
-                textToSpeak.choices[0].message.content,
+                textToSpeak,
                 function (result) {
                     sdk.ResultReason.SynthesizingAudio;
                     if (audiostatus == "pause") player.pause();
@@ -128,7 +128,7 @@ export const Answer = ({
     };
 
     useEffect(() => {
-        handleVoiceOutput(answer, playsound);
+        handleVoiceOutput(sanitizedAnswerHtml.replace("<a></a>", ""), playsound);
         setaudiostatus("initial");
     }, [answer]);
 
@@ -170,48 +170,6 @@ export const Answer = ({
     };
 
     return (
-        // <Stack className={`${styles.answerContainer} ${isSelected && styles.selected}`} verticalAlign="space-between">
-        //     <Stack.Item>
-        //         <Stack horizontal horizontalAlign="space-between">
-        //             <img src={mirandaLogo} alt="Miranda do Douro Logo" aria-label="Miranda do Douro Logo" width="28" height="28"></img>
-        //         </Stack>
-        //     </Stack.Item>
-
-        //     <Stack.Item grow>
-        //         <div className={styles.answerText} dangerouslySetInnerHTML={{ __html: sanitizedAnswerHtml }}></div>
-        //     </Stack.Item>
-
-        //     {!!parsedAnswer.citations.length && (
-        //         <Stack.Item>
-        //             <Stack horizontal wrap tokens={{ childrenGap: 5 }}>
-        //                 <span className={styles.citationLearnMore}>Citations:</span>
-        //                 {parsedAnswer.citations.map((x, i) => {
-        //                     const path = getCitationFilePath(x);
-        //                     return (
-        //                         <a key={i} className={styles.citation} title={x} onClick={() => onCitationClicked(path)}>
-        //                             {`${++i}. ${x}`}
-        //                         </a>
-        //                     );
-        //                 })}
-        //             </Stack>
-        //         </Stack.Item>
-        //     )}
-
-        //     {!!followupQuestions?.length && showFollowupQuestions && onFollowupQuestionClicked && (
-        //         <Stack.Item>
-        //             <Stack horizontal wrap className={`${!!parsedAnswer.citations.length ? styles.followupQuestionsList : ""}`} tokens={{ childrenGap: 6 }}>
-        //                 <span className={styles.followupQuestionLearnMore}>Follow-up questions:</span>
-        //                 {followupQuestions.map((x, i) => {
-        //                     return (
-        //                         <a key={i} className={styles.followupQuestion} title={x} onClick={() => onFollowupQuestionClicked(x)}>
-        //                             {`${x}`}
-        //                         </a>
-        //                     );
-        //                 })}
-        //             </Stack>
-        //         </Stack.Item>
-        //     )}
-        // </Stack>
         <Stack className={`${styles.answerContainer} ${isSelected && styles.selected}`} verticalAlign="space-between">
             <div className={styles.answerHeader}>
                 <Stack.Item>

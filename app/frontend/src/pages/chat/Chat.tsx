@@ -48,41 +48,63 @@ const Chat = () => {
     };
     const [selectedMenuItem, setSelectedMenuItem] = useState("");
 
-    const handleMenuItemClick = (item: string) => {
+    type MenuItem = "geral" | "turismo" | "historia" | "cultura";
+    type Language = "en" | "pt" | "es" | "fr";
+
+    const titles: Record<MenuItem, Record<Language, string>> = {
+        geral: {
+            en: "Guia Prático do Município",
+            pt: "Guia Prático do Município",
+            es: "Guia Prático do Município",
+            fr: "Guia Prático do Município"
+        },
+        turismo: {
+            en: "Guia Prático do Município - Tourism",
+            pt: "Guia Prático do Município - Turismo",
+            es: "Guia Prático do Município - Turismo",
+            fr: "Guia Prático do Município - Tourisme"
+        },
+        historia: {
+            en: "Guia Prático do Município - History and Heritage",
+            pt: "Guia Prático do Município - Historia e Patrimonio",
+            es: "Guia Prático do Município - Historia y Patrimonio",
+            fr: "Guia Prático do Município - Histoire et Patrimoine"
+        },
+        cultura: {
+            en: "Guia Prático do Município - Culture",
+            pt: "Guia Prático do Município - Cultura",
+            es: "Guia Prático do Município - Cultura",
+            fr: "Guia Prático do Município - Culture"
+        }
+    };
+    const handleMenuItemClick = (item: MenuItem) => {
         setSelectedMenuItem(item);
         setShowPopupDisclaimer(false); // Fechar a modal quando o botão for clicado
+
+        const title = titles[item][language as Language];
+
         switch (item) {
             case "geral":
                 setColor("#B9A149");
                 setColorHeader("#E1D4A7");
-                setIlanguageTitle("Guia Prático do Município");
-
                 break;
             case "turismo":
                 setColor("#1C5D89");
                 setColorHeader("#C5DFEE");
-                setIlanguageTitle("Guia Prático do Município - Turismo");
-                break;
-            case "entidades":
-                setColor("#A14637");
-                setColorHeader("#F8D8CF");
-                setIlanguageTitle("Guia Prático do Município - Entidades da região");
                 break;
             case "historia":
                 setColor("#7B3F32"); // nova cor semelhante
                 setColorHeader("#E8CEC4"); // nova cor semelhante
-                setIlanguageTitle("Guia Prático do Município - Historia e Patrimonio");
                 break;
             case "cultura":
                 setColor("#8A3D2E"); // nova cor semelhante
                 setColorHeader("#EAD4CA"); // nova cor semelhante
-                setIlanguageTitle("Guia Prático do Município - Cultura");
                 break;
             default:
                 setColor("#B9A149");
                 setColorHeader("#E1D4A7");
-                setIlanguageTitle("Guia Prático do Município");
         }
+        setIlanguageTitle(title);
         setMenuOpen(false);
     };
 
@@ -430,9 +452,6 @@ const Chat = () => {
                         <button className={styles.optionButton} onClick={() => handleMenuItemClick("turismo")}>
                             Turismo
                         </button>
-                        <button className={styles.optionButton} onClick={() => handleMenuItemClick("entidades")}>
-                            Entidades da região
-                        </button>
                         <button className={styles.optionButton} onClick={() => handleMenuItemClick("historia")}>
                             Historia e Patrimonio
                         </button>
@@ -453,9 +472,6 @@ const Chat = () => {
                                 </li>
                                 <li>
                                     <a onClick={() => handleMenuItemClick("turismo")}>Turismo</a>
-                                </li>
-                                <li>
-                                    <a onClick={() => handleMenuItemClick("entidades")}>Entidades da região</a>
                                 </li>
                                 <li>
                                     <a onClick={() => handleMenuItemClick("historia")}>Historia e Patrimonio</a>
@@ -550,7 +566,7 @@ const Chat = () => {
                                     </button>
                                 )} */}
                                 {/* <div> */}
-                                <div
+                                {/* <div
                                     id="linha 365"
                                     className={styles.volumeIconWrapper}
                                     onClick={() => {
@@ -563,7 +579,7 @@ const Chat = () => {
                                     ) : (
                                         <BsVolumeMuteFill style={{ color: "white" }} size={32} />
                                     )}
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         <div
@@ -736,6 +752,7 @@ const Chat = () => {
                                     className={styles.wrapInputs}
                                 >
                                     <ClearChatButton
+                                        language={language}
                                         className={styles.commandButtonDelete}
                                         onClick={clearChat}
                                         disabled={!lastQuestionRef.current || isLoading}
@@ -750,7 +767,7 @@ const Chat = () => {
                                         // isActive={isActive}
                                     />
 
-                                    <div className={styles.volumeAvatar}>
+                                    {/* <div className={styles.volumeAvatar}>
                                         <div
                                             id="linha 552"
                                             className={styles.volumeMobile}
@@ -765,7 +782,7 @@ const Chat = () => {
                                                 <BsVolumeMuteFill style={{ color: "white" }} size={32} />
                                             )}
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>

@@ -252,7 +252,7 @@ hr {
     padding: 10px;
     outline: none;
     background: white;
-    width: 130px;
+    width: 200px;
 }
 
 .commandButtonDelete:hover {
@@ -644,8 +644,42 @@ hr {
     font-size: 25px;
 }
 
+.fullWidthButton {
+    width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+    .title {
+        margin-top: 11px;
+        margin-left: 10px;
+        font-size: 14px; /* Ajuste para o tamanho desejado */
+    }
+    .modalContent {
+        padding: 15px;
+        font-size: 12px;
+    }
+
+    h2 {
+        font-size: 16px;
+    }
+
+    p {
+        font-size: 12px;
+    }
+
+    .buttonGroup {
+        flex-direction: column;
+        margin-bottom: 5px;
+    }
+
+    .optionButton {
+        padding: 8px;
+        font-size: 14px;
+    }
+}
 .languageButtons {
     display: flex;
+    margin-top: 20px;
     gap: 10px;
 }
 
