@@ -41,7 +41,6 @@ export const AnalysisPanel = ({ answer, activeTab, activeCitation, citationHeigh
     }, []);
 
     return (
-        //<div className={styles.analysisPanelPopupContainer}>/
         <div>
             <div className={`${styles.divTeste}`}>
                 <button className={`${styles.btnFechar}`} onClick={setActiveAnalysisPanelTab}>

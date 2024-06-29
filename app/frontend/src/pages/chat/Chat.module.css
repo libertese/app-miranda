@@ -1,10 +1,3 @@
-.popupContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
 .closeButton {
     background: none;
     border: none;
@@ -59,8 +52,6 @@ hr {
     padding: 30px;
     border-radius: 15px;
     font-size: 15px;
-    width: 90%;
-    max-width: 900px;
     text-align: center;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
     position: relative;
@@ -279,9 +270,6 @@ hr {
     transform: translate(-50%, -50%);
 }
 
-.overlay {
-}
-
 .closeButton {
     position: absolute;
     top: 10px;
@@ -327,7 +315,6 @@ hr {
 }
 
 /*new-styles*/
-
 .volumeIconWrapper {
     height: 40px;
     width: 40px;
@@ -337,6 +324,8 @@ hr {
     justify-content: center;
     align-items: center;
     display: flex;
+    margin-top: -80px;
+    position: absolute;
 }
 
 .volumeNotMobile {
@@ -451,12 +440,8 @@ hr {
         "Helvetica Neue",
         sans-serif;
 }
-
-.suggestionsTitle {
-    font-weight: 800;
-    font-size: 20px;
-    margin: 0;
-    margin-bottom: 14px;
+.commandDiv {
+    margin-top: 300px;
 }
 
 .subTitle {
@@ -618,8 +603,6 @@ hr {
     margin: -1px;
     clip-path: inset(0px);
     position: relative;
-
-    top: 10px;
     width: 100vw;
     height: 90vh;
 }
@@ -753,10 +736,6 @@ hr {
 
 .dropdownMenu li a:hover {
     color: #007bff; /* Cor ao passar o mouse */
-}
-
-.suggestionsTitle {
-    margin-top: 20px;
 }
 
 .examplesNavList {

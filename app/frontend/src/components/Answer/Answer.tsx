@@ -48,14 +48,7 @@ export const Answer = ({
 
     const handleVoiceOutput = async (resposta: any, playsound: boolean) => {
         const player = new sdk.SpeakerAudioDestination();
-        const pause = () => {
-            player.close();
-        };
-
-        const resume = () => {
-            player.resume();
-        };
-
+        console.log(language);
         if (playsound) {
             const speechConfig = sdk.SpeechConfig.fromSubscription("54f08182a9654cca8e01cf697e38b004", "westeurope");
             var VoiceName = "";

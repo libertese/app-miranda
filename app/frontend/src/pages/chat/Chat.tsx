@@ -423,13 +423,7 @@ const Chat = () => {
 
     return (
         <div className={styles.container}>
-            <Modal
-                isOpen={showPopupDisclaimer}
-                onRequestClose={closePopupDisclaimer}
-                contentLabel="Custom Pop-up"
-                className={styles.popupContainer}
-                overlayClassName={styles.overlay}
-            >
+            <Modal isOpen={showPopupDisclaimer} onRequestClose={closePopupDisclaimer} className={styles.popupContainer} overlayClassName={styles.overlay}>
                 <div className={styles.modalContent}>
                     <button className={styles.closeButton} onClick={closePopupDisclaimer}>
                         &times;
@@ -502,7 +496,6 @@ const Chat = () => {
                 </div>
             </div>
             <div
-                //className={styles.chatRoot}
                 style={{
                     flex: "1",
                     display: "flex",
@@ -513,37 +506,18 @@ const Chat = () => {
                     margin: "auto"
                 }}
             >
-                {/* <div className={styles.chatContainer}> */}
                 {!lastQuestionRef.current ? (
-                    // <div
-                    //   className={styles.chatEmptyState}
-                    //   style={{ maxHeight: "100vh", height: "100vh" }}
-                    // >
-
                     <div className={styles.chatWrapper}>
                         <div>
                             <div
                                 style={{
-                                    // display: "flex",
-                                    // flexDirection: "column",
-                                    // gap: "10px",
                                     justifyContent: "end",
                                     paddingLeft: "10px",
                                     position: "relative",
                                     width: "100%"
                                 }}
                             >
-                                <div
-                                    style={{
-                                        marginBottom: "0",
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        justifyContent: "end",
-                                        alignItems: "center",
-                                        overflow: "hidden"
-                                    }}
-                                    className={styles.avatarWelcome}
-                                >
+                                <div className={styles.avatarWelcome}>
                                     <video
                                         id="Welcomeavatar"
                                         src={newPauliteiro}
@@ -556,22 +530,11 @@ const Chat = () => {
                                         className={styles.VideoAvatarWelcome}
                                     />
                                 </div>
-                                {/* {isActive ? (
-                                    <button className={styles.btnVoiceRedondo} style={{ position: "absolute" }} onClick={handleVoiceInput}>
-                                        <Record24Regular color="#1d9dff" primaryFill="rgb(29,157,255)" />
-                                    </button>
-                                ) : (
-                                    <button className={styles.btnVoiceRedondo} style={{ position: "absolute" }} onClick={handleVoiceInput}>
-                                        <Mic28Filled /> 
-                                    </button>
-                                )} */}
-                                {/* <div> */}
-                                {/* <div
+                                <div
                                     id="linha 365"
                                     className={styles.volumeIconWrapper}
                                     onClick={() => {
                                         setIsSoundOn(!isSoundOn);
-                                        // isSoundOn ? setaudiostatus("pause") : setaudiostatus("resume");
                                     }}
                                 >
                                     {isSoundOn ? (
@@ -579,15 +542,14 @@ const Chat = () => {
                                     ) : (
                                         <BsVolumeMuteFill style={{ color: "white" }} size={32} />
                                     )}
-                                </div> */}
+                                </div>
                             </div>
                         </div>
                         <div
-                            //className={styles.formContent}
                             style={{
                                 paddingTop: "50px",
                                 paddingRight: "10px",
-                                display: "flex", // {/*justifyContent: "space-between",
+                                display: "flex",
                                 justifyContent: "space-between",
                                 flexDirection: "column"
                             }}
@@ -615,13 +577,11 @@ const Chat = () => {
                                     disabled={isLoading}
                                     onSend={question => makeApiRequest(question)}
                                     onListen={handleVoiceInput}
-                                    // isActive={isActive}
                                 />
                             </div>
                         </div>
                     </div>
                 ) : (
-                    // </div>
                     <>
                         <div className={styles.chatWrapper}>
                             <div style={{ display: "flex" }}>
@@ -671,7 +631,6 @@ const Chat = () => {
                                             </button>
                                         )}
                                     </div>
-                                    {/* <div> */}
                                     <div
                                         id="linha 461"
                                         className={styles.volumeNotMobile}
@@ -760,7 +719,7 @@ const Chat = () => {
 
                                     <QuestionInput
                                         clearOnSend
-                                        placeholder="Digite a sua Pergunta"
+                                        placeholder={getPlaceholderText(language)}
                                         disabled={isLoading}
                                         onSend={question => makeApiRequest(question)}
                                         onListen={handleVoiceInput}

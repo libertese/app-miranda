@@ -37,34 +37,34 @@ const EXAMPLES: { [key: string]: string[] } = {
 
 const EXAMPLES_RESTURANTES: { [key: string]: string[] } = {
     en: [
-        "What function of the Miranda do Douro city council do you consider most important for the quality of life of citizens?",
-        "Which tourist spot in Miranda do Douro would you like to visit first and why?",
-        "Which tourist spot in Miranda do Douro fascinates you more: the Aqueduct of Vilarinho or the Castle of Miranda do Douro? Why?",
-        "Which legend of Miranda do Douro intrigues you more: the Legend of the Moura or the Legend of the Nazo? Why?"
+        "What are the parishes of Miranda do Douro?",
+        "What are the main monuments of Miranda do Douro?",
+        "Tell me about the Pauliteiros of Miranda do Douro",
+        "Tell me what you know about Miranda do Douro"
     ],
     pt: [
-        "Qual a função da prefeitura de Miranda do Douro que você considera mais importante para a qualidade de vida dos cidadãos?",
-        "Qual ponto turístico de Miranda do Douro você gostaria de visitar primeiro e por quê?",
-        "Qual ponto turístico em Miranda do Douro mais te fascina: o Aqueduto do Vilarinho ou o Castelo de Miranda do Douro? Por quê?",
-        "Qual a sua opinião sobre a influência histórica e cultural na gastronomia de Miranda do Douro, como no caso das alheiras?"
+        "Quais as freguesias de Miranda do Douro?",
+        "Quais os principais monumentos de Miranda do Douro?",
+        "Fala-me sobre os pauliteiros de Miranda do Douro",
+        "Diz-me o que sabes sobre Miranda do Douro"
     ],
     es: [
-        "¿Qué función del ayuntamiento de Miranda do Douro consideras más importante para la calidad de vida de los ciudadanos?",
-        "¿Qué punto turístico de Miranda do Douro te gustaría visitar primero y por qué?",
-        "¿Qué punto turístico de Miranda do Douro te fascina más: el Acueducto de Vilarinho o el Castillo de Miranda do Douro? ¿Por qué?",
-        "¿Cuál es tu opinión sobre la influencia histórica y cultural en la gastronomía de Miranda do Douro, como en el caso de las alheiras?"
+        "¿Cuáles son las parroquias de Miranda do Douro?",
+        "¿Cuáles son los principales monumentos de Miranda do Douro?",
+        "Háblame sobre los pauliteiros de Miranda do Douro",
+        "Dime lo que sabes sobre Miranda do Douro"
     ],
     pt_pt: [
-        "Qual a função da câmara municipal de Miranda do Douro que consideras mais importante para a qualidade de vida dos cidadãos?",
-        "Qual ponto turístico de Miranda do Douro gostarias de visitar primeiro e porquê?",
-        "Qual ponto turístico em Miranda do Douro mais te fascina: o Aqueduto do Vilarinho ou o Castelo de Miranda do Douro? Por quê?",
-        "Qual a tua opinião sobre a influência histórica e cultural na gastronomia de Miranda do Douro, como no caso das alheiras?"
+        "Quais as freguesias de Miranda do Douro?",
+        "Quais os principais monumentos de Miranda do Douro?",
+        "Fala-me sobre os pauliteiros de Miranda do Douro",
+        "Diz-me o que sabes sobre Miranda do Douro"
     ],
     fr: [
-        "Quelle fonction du conseil municipal de Miranda do Douro considérez-vous comme la plus importante pour la qualité de vie des citoyens?",
-        "Quel site touristique de Miranda do Douro aimeriez-vous visiter en premier et pourquoi?",
-        "Quel site touristique de Miranda do Douro vous fascine le plus: l'Aqueduc de Vilarinho ou le Château de Miranda do Douro? Pourquoi?",
-        "Quelle est votre opinion sur l'influence historique et culturelle sur la cuisine de Miranda do Douro, comme dans le cas des alheiras?"
+        "Quelles sont les paroisses de Miranda do Douro?",
+        "Quels sont les principaux monuments de Miranda do Douro?",
+        "Parlez-moi des pauliteiros de Miranda do Douro",
+        "Dites-moi ce que vous savez de Miranda do Douro"
     ]
 };
 
@@ -181,7 +181,8 @@ export const ExampleList: React.FC<Props> = ({ onExampleClicked, language2, sele
                 return "Sugerencias de preguntas:";
             case "pt_pt":
                 return "Sugestões de perguntas:";
-            // Adicione mais casos conforme necessário para outras linguagens
+            case "fr":
+                return "Suggestions de questions:";
             default:
                 return "Suggestions for questions:";
         }
