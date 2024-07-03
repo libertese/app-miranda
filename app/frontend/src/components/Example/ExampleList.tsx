@@ -16,7 +16,7 @@ const EXAMPLES: { [key: string]: string[] } = {
         "Diz-me o que sabes sobre Miranda do Douro"
     ],
     es: [
-        "¿Cuáles son las parroquias de Miranda do Douro?",
+        "¿Cuales son los ayuntamientos de Miranda do Douro?",
         "¿Cuáles son los principales monumentos de Miranda do Douro?",
         "Háblame sobre los pauliteiros de Miranda do Douro",
         "Dime lo que sabes sobre Miranda do Douro"
@@ -49,7 +49,7 @@ const EXAMPLES_RESTURANTES: { [key: string]: string[] } = {
         "Diz-me o que sabes sobre Miranda do Douro"
     ],
     es: [
-        "¿Cuáles son las parroquias de Miranda do Douro?",
+        "¿Cuales son los ayuntamientos de Miranda do Douro?",
         "¿Cuáles son los principales monumentos de Miranda do Douro?",
         "Háblame sobre los pauliteiros de Miranda do Douro",
         "Dime lo que sabes sobre Miranda do Douro"
@@ -73,7 +73,7 @@ const EXAMPLES_TURISMO: { [key: string]: string[] } = {
         "Tell me about the gastronomy of Miranda do Douro",
         "Describe the Castle of Miranda do Douro",
         "Tell me about the Cathedral of Miranda do Douro",
-        "What is the typical craftsmanship of Miranda do Douro?"
+        "What are the typical handicrafts of Miranda do Douro?"
     ],
     pt: [
         "Fala-me sobre a gastronomia de Miranda do Douro",
@@ -85,7 +85,7 @@ const EXAMPLES_TURISMO: { [key: string]: string[] } = {
         "Háblame sobre la gastronomía de Miranda do Douro",
         "Describe el Castillo de Miranda do Douro",
         "Háblame sobre la Catedral de Miranda do Douro",
-        "¿Cuál es la artesanía típica de Miranda do Douro?"
+        "Háblame de la artesanía típica de Miranda do Douro?"
     ],
     pt_pt: [
         "Fala-me sobre a gastronomia de Miranda do Douro",

@@ -48,7 +48,6 @@ export const Answer = ({
 
     const handleVoiceOutput = async (resposta: any, playsound: boolean) => {
         const player = new sdk.SpeakerAudioDestination();
-        console.log(language);
         if (playsound) {
             const speechConfig = sdk.SpeechConfig.fromSubscription("54f08182a9654cca8e01cf697e38b004", "westeurope");
             var VoiceName = "";
@@ -63,7 +62,7 @@ export const Answer = ({
                     VoiceName = "en-US-GuyNeural";
                     break;
                 case "es":
-                    VoiceName = "es-ES-PabloNeural";
+                    VoiceName = "es-ES-AlvaroNeural";
                     break;
                 case "de":
                     VoiceName = "de-DE-StefanNeural";
@@ -96,7 +95,8 @@ export const Answer = ({
 
             const audioConfigplayer = sdk.AudioConfig.fromSpeakerOutput(player);
             //const syn = new sdk.SpeechSynthesizer(speechConfig, audioConfig)
-            const textToSpeak = resposta; // Replace with your desired text
+            const textToSpeak = resposta.replace("<a></a>", ""); // Replace with your desired text
+            console.log(textToSpeak);
             synthesizer.speakTextAsync(
                 textToSpeak,
                 function (result) {
@@ -184,10 +184,7 @@ export const Answer = ({
                 </Stack.Item>
             </div>
             <Stack.Item grow>
-                <div
-                    className={styles.answerText}
-                    dangerouslySetInnerHTML={{ __html: sanitizedAnswerHtml.replace('"', "").replace('"', "").replace("¹", "").replace("1", "") }}
-                ></div>
+                <div className={styles.answerText} dangerouslySetInnerHTML={{ __html: sanitizedAnswerHtml.replace('"', "").replace('"', "") }}></div>
             </Stack.Item>
             {!!followupQuestions?.length && showFollowupQuestions && onFollowupQuestionClicked && (
                 <Stack.Item>
