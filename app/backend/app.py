@@ -4,6 +4,7 @@ import json
 import logging
 import mimetypes
 import os
+import psycopg2
 from pathlib import Path
 from typing import Any, AsyncGenerator, Dict, Union, cast
 
@@ -68,6 +69,32 @@ from prepdocs import (
 )
 from prepdocslib.filestrategy import UploadUserFileStrategy
 from prepdocslib.listfilestrategy import File
+
+def dbInsert(question, answer):
+    try:
+        connection = psycopg2.connect(user='admin_tac', 
+                                      password='Crazy122325', 
+                                      host='gptmirandadouro.postgres.database.azure.com', 
+                                      port='5432', 
+                                      database='postgres')
+        cursor = connection.cursor()
+        
+        # Usando parâmetros para evitar SQL injection
+        sql = "INSERT INTO questions (question, answer) VALUES (%s, %s) RETURNING questionid"
+        cursor.execute(sql, (question, answer))
+        
+        inserted_id = cursor.fetchone()[0]
+        connection.commit()
+        return inserted_id
+    
+    except (Exception, psycopg2.Error) as error:
+        print("Erro ao inserir no PostgreSQL:", error)
+    
+    finally:
+        # Fechar a conexão com o banco de dados
+        if connection:
+            cursor.close()
+            connection.close()
 
 bp = Blueprint("routes", __name__, static_folder="static")
 # Fix Windows registry issue with mimetypes
@@ -203,6 +230,12 @@ async def chat(auth_claims: Dict[str, Any]):
             context=context,
             session_state=request_json.get("session_state"),
         )
+        if len(request_json["messages"]) >= 2:
+            question = next((msg['content'] for msg in request_json["messages"] if msg['role'] == 'user'), None)
+            answer = next((msg['content'] for msg in request_json["messages"] if msg['role'] == 'assistant'), None)
+            
+            if question and answer:
+                dbInsert(question, answer)
         if isinstance(result, dict):
             return jsonify(result)
         else:
