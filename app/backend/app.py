@@ -230,12 +230,6 @@ async def chat(auth_claims: Dict[str, Any]):
             context=context,
             session_state=request_json.get("session_state"),
         )
-        if len(request_json["messages"]) >= 2:
-            question = next((msg['content'] for msg in request_json["messages"] if msg['role'] == 'user'), None)
-            answer = next((msg['content'] for msg in request_json["messages"] if msg['role'] == 'assistant'), None)
-            
-            if question and answer:
-                dbInsert(question, answer)
         if isinstance(result, dict):
             return jsonify(result)
         else:

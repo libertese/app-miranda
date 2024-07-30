@@ -1,5 +1,5 @@
+import psycopg2
 from typing import Any, Coroutine, List, Literal, Optional, Union, overload
-
 from azure.search.documents.aio import SearchClient
 from azure.search.documents.models import VectorQuery
 from openai import AsyncOpenAI, AsyncStream
@@ -15,6 +15,20 @@ from core.authentication import AuthenticationHelper
 from core.modelhelper import get_token_limit
 
 
+def dbInsert(question, answer):
+    print("INSIDE")
+    print("question",question)
+    print("answer",answer)
+    connection = psycopg2.connect(user = 'admin_tac', password = 'Crazy122325', host = 'gptmirandadouro.postgres.database.azure.com', port = '5432', database = 'postgres')
+    curs = connection.cursor()
+    question = question.replace("'","")
+    answer = answer.replace("'","")
+    sql = "insert into questions (question, answer) values ('" + question + "', '" + answer + "') returning questionid"
+    curs.execute(sql)
+    inserted_id = curs.fetchone()[0]
+    connection.commit()
+   
+    return inserted_id
 class ChatReadRetrieveReadApproach(ChatApproach):
     """
     A multi-step approach that first uses OpenAI to turn the user's question into a search query,
@@ -61,24 +75,6 @@ class ChatReadRetrieveReadApproach(ChatApproach):
         {follow_up_questions_prompt}
         {injected_prompt}
         """
-
-    @overload
-    async def run_until_final_call(
-        self,
-        history: list[dict[str, str]],
-        overrides: dict[str, Any],
-        auth_claims: dict[str, Any],
-        should_stream: Literal[False],
-    ) -> tuple[dict[str, Any], Coroutine[Any, Any, ChatCompletion]]: ...
-
-    @overload
-    async def run_until_final_call(
-        self,
-        history: list[dict[str, str]],
-        overrides: dict[str, Any],
-        auth_claims: dict[str, Any],
-        should_stream: Literal[True],
-    ) -> tuple[dict[str, Any], Coroutine[Any, Any, AsyncStream[ChatCompletionChunk]]]: ...
 
     async def run_until_final_call(
         self,
@@ -228,13 +224,22 @@ class ChatReadRetrieveReadApproach(ChatApproach):
             ],
         }
 
+
         chat_coroutine = self.openai_client.chat.completions.create(
             # Azure OpenAI takes the deployment name as the model name
             model=self.chatgpt_deployment if self.chatgpt_deployment else self.chatgpt_model,
             messages=messages,
-            temperature=overrides.get("temperature", 0.3),
+            temperature=overrides.get("temperature", 0.7),
             max_tokens=response_token_limit,
             n=1,
             stream=should_stream,
         )
+        # Encontrar a mensagem do usuário
+        user_message = next((msg['content'] for msg in messages if msg['role'] == 'user'), None)
+
+        # Dividir a mensagem em antes e depois de "Sources:"
+        sources_index = user_message.find("Sources:")
+        question = user_message[:sources_index].strip() if sources_index != -1 else user_message
+        answer = user_message[sources_index + len("Sources:"):].strip() if sources_index != -1 else ""
+        dbInsert(question, answer)
         return (extra_info, chat_coroutine)

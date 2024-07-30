@@ -234,4 +234,5 @@ class ChatReadRetrieveReadVisionApproach(ChatApproach):
             n=1,
             stream=should_stream,
         )
+        print("ENTROU AQUI")
         return (extra_info, chat_coroutine)

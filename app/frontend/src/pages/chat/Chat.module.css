@@ -662,13 +662,6 @@ hr {
 }
 .languageButtons {
     display: flex;
-    margin-top: 20px;
-    gap: 10px;
-}
-
-.languageButtons {
-    display: flex;
-    justify-content: flex-end;
 }
 
 .languageButtons button {
@@ -681,26 +674,6 @@ hr {
     padding: 5px;
 }
 
-.languageButtons button:focus {
-    outline: none;
-}
-
-.languageButtons button svg {
-    width: 24px;
-    height: 24px;
-}
-
-.languageButtons button:nth-child(1) svg {
-    fill: #1d9dff; /* Cor para a bandeira do inglês */
-}
-
-.languageButtons button:nth-child(2) svg {
-    fill: #ffd700; /* Cor para a bandeira do francês */
-}
-
-.languageButtons button:nth-child(3) svg {
-    fill: #ff6347; /* Cor para a bandeira do espanhol */
-}
 .flagIcon {
     width: 24px;
     height: 24px;

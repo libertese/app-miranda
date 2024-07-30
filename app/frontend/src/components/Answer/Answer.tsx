@@ -96,7 +96,6 @@ export const Answer = ({
             const audioConfigplayer = sdk.AudioConfig.fromSpeakerOutput(player);
             //const syn = new sdk.SpeechSynthesizer(speechConfig, audioConfig)
             const textToSpeak = resposta.replace("<a></a>", ""); // Replace with your desired text
-            console.log(textToSpeak);
             synthesizer.speakTextAsync(
                 textToSpeak,
                 function (result) {
